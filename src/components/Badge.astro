@@ -1,0 +1,9 @@
+---
+interface Props {
+  variant?: 'burgundy' | 'violet' | 'gold' | 'outline';
+}
+const { variant = 'burgundy' } = Astro.props;
+const cls = ['kc-badge', variant !== 'burgundy' && `kc-badge--${variant}`].filter(Boolean).join(' ');
+---
+
+<span class={cls}><slot /></span>

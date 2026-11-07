@@ -1,0 +1,17 @@
+---
+interface Props {
+  eyebrow: string;
+  title: string;
+  lead?: string;
+  /** Niveau du titre : h1 pour la tête de page, h2 sinon. */
+  as?: 'h1' | 'h2';
+  id?: string;
+}
+const { eyebrow, title, lead, as: Tag = 'h2', id } = Astro.props;
+---
+
+<header class="kc-section">
+  <p class="kc-section__eyebrow">{eyebrow}<slot name="badge" /></p>
+  <Tag class="kc-section__title" id={id}>{title}</Tag>
+  {lead && <p class="kc-section__lead">{lead}</p>}
+</header>

@@ -1,0 +1,130 @@
+---
+import Base from '../layouts/Base.astro';
+import Badge from './Badge.astro';
+import BulletList from './BulletList.astro';
+import Card from './Card.astro';
+import Chip from './Chip.astro';
+import CodePanel from './CodePanel.astro';
+import SectionTitle from './SectionTitle.astro';
+import { languages, ui, type Lang } from '../i18n/ui';
+import { clibs, cpp, ORG_URL, repoUrl, type Project } from '../data/projects';
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+const t = ui[lang];
+
+const cardProps = (p: Project) => ({
+  title: p.title[lang],
+  meta: p.repo,
+  href: repoUrl(p.repo),
+  extra: p.homepage ? { label: t.card.site, href: p.homepage } : undefined,
+});
+
+const kugeInstall = [
+  '<span class="kw">git</span> clone --recurse-submodules https://github.com/kronkorp/KUGE kuge',
+  '<span class="kw">cd</span> kuge',
+  '<span class="kw">cmake</span> -S . -B build',
+  '<span class="kw">cmake</span> --build build -j',
+].join('\n');
+---
+
+<Base lang={lang} title={t.meta.title} description={t.meta.description}>
+  <a class="skip" href="#main">{t.skip}</a>
+
+  <header class="site-header container">
+    <a class="brand" href={languages[lang].path}>
+      <img src="/img/kronk-corp-logo.png" alt="" width="36" height="36" />
+      <span>Kronk corp</span>
+    </a>
+    <nav class="site-nav" aria-label={t.nav.label}>
+      <a href="#kuge">{t.nav.kuge}</a>
+      <a href="#cpp">{t.nav.cpp}</a>
+      <a href="#c">{t.nav.clibs}</a>
+    </nav>
+    <nav class="lang" aria-label={t.langLabel}>
+      {
+        (Object.keys(languages) as Lang[]).map((code) => (
+          <a
+            href={languages[code].path}
+            hreflang={code}
+            lang={code}
+            aria-label={languages[code].name}
+            aria-current={code === lang ? 'page' : undefined}
+          >
+            {languages[code].short}
+          </a>
+        ))
+      }
+    </nav>
+  </header>
+
+  <main id="main">
+    <section class="hero container">
+      <p class="kc-section__eyebrow">{t.hero.eyebrow}</p>
+      <h1 class="hero__title">Kronk<br />corp</h1>
+      <p class="hero__lead">{t.hero.lead}</p>
+      <p class="hero__links">
+        <a href="#kuge">{t.hero.ctaKuge}</a>
+        <a href={ORG_URL}>{t.hero.ctaOrg}</a>
+      </p>
+    </section>
+
+    <section class="section" id="kuge" aria-labelledby="kuge-title">
+      <div class="container kuge">
+        <div class="stack">
+          <SectionTitle id="kuge-title" eyebrow={t.kuge.eyebrow} title={t.kuge.title} lead={t.kuge.lead} />
+          <BulletList items={t.kuge.bullets} />
+          <p class="badges">
+            <Badge variant="violet">{t.kuge.badges[0]}</Badge>
+            <Badge>{t.kuge.badges[1]}</Badge>
+            <Badge variant="outline">{t.kuge.badges[2]}</Badge>
+          </p>
+          <p><a href={repoUrl('KUGE')}>{t.kuge.cta}</a></p>
+        </div>
+        <div class="stack">
+          <img
+            class="kuge__logo"
+            src="/img/kuge-logo-blanc.svg"
+            alt="KUGE"
+            width="360"
+            height="117"
+          />
+          <CodePanel html={kugeInstall} />
+          <p class="caption">{t.kuge.modules}</p>
+          <p class="chips">
+            <Chip>kuge-core</Chip>
+            <Chip>kuge-client</Chip>
+            <Chip>kuge-physics</Chip>
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="cpp" aria-labelledby="cpp-title">
+      <div class="container stack stack--wide">
+        <SectionTitle id="cpp-title" eyebrow={t.cpp.eyebrow} title={t.cpp.title} lead={t.cpp.lead} />
+        <div class="grid">
+          {cpp.map((p) => <Card {...cardProps(p)}>{p.description[lang]}</Card>)}
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="c" aria-labelledby="c-title">
+      <div class="container stack stack--wide">
+        <SectionTitle id="c-title" eyebrow={t.clibs.eyebrow} title={t.clibs.title} lead={t.clibs.lead} />
+        <div class="grid">
+          {clibs.map((p) => <Card {...cardProps(p)}>{p.description[lang]}</Card>)}
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container site-footer__inner">
+      <span>KUGE · Kronk corp</span>
+      <a href={ORG_URL}>{t.footer.org}</a>
+    </div>
+  </footer>
+</Base>

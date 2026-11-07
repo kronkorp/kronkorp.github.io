@@ -1,0 +1,77 @@
+/* Kronk corp — tokens, repris du design system (tokens.json). Ne pas modifier ici : mettre à jour depuis le design system. */
+:root, [data-theme="ink"] {
+  --ink: #161616;
+  --suit: #1b2540;
+  --suit-line: #2e3b62; /* décoratif seulement (1.6:1 sur ink) */
+  --cream: #f3eee6;
+  --muted: #9aa6bf;
+  --burgundy: #a3234a; /* aplat avec on-burgundy, jamais du texte sur ink */
+  --gold: #e8b64c;
+  --caramel: #c98b4e;
+  --violet: #7e008d; /* aplat avec on-violet, jamais du texte */
+  --violet-light: #c98bd6;
+  --on-gold: var(--ink);
+  --on-burgundy: var(--cream);
+  --on-violet: var(--cream);
+}
+:root {
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-6: 24px;
+  --space-8: 32px;
+  --space-12: 48px;
+  --space-16: 64px;
+  --space-32: 128px;
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --radius-full: 999px;
+  --font-hero: "Lexend Zetta", "Saira", Arial, sans-serif;
+  --font-display: "Futura Now Headline", "Saira", Arial, sans-serif;
+  --font-sans: "Saira", Arial, sans-serif;
+  --font-mono: "JetBrains Mono", "Courier New", monospace;
+}
+@font-face {
+  font-family: "Saira";
+  src: url("/fonts/Saira-400.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Saira";
+  src: url("/fonts/Saira-500.woff2") format("woff2");
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Saira";
+  src: url("/fonts/Saira-600.woff2") format("woff2");
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Saira";
+  src: url("/fonts/Saira-700.woff2") format("woff2");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Futura Now Headline";
+  src: url("/fonts/FuturaNowHeadline-Bd.otf") format("opentype");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "JetBrains Mono";
+  src: url("/fonts/JetBrainsMono-400.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}

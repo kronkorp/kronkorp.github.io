@@ -1,0 +1,11 @@
+---
+interface Props {
+  items: string[];
+  muted?: boolean;
+}
+const { items, muted = false } = Astro.props;
+---
+
+<ul class:list={['kc-bullets', { 'kc-bullets--muted': muted }]}>
+  {items.map((item) => <li>{item}</li>)}
+</ul>
