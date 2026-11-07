@@ -1,18 +1,13 @@
 /* Kronk corp — tokens, repris du design system (tokens.json). Ne pas modifier ici : mettre à jour depuis le design system. */
 :root, [data-theme="ink"] {
-  --ink: #161616;
-  --suit: #1b2540;
-  --suit-line: #2e3b62; /* décoratif seulement (1.6:1 sur ink) */
-  --cream: #f3eee6;
+  --ink: #13161a;
+  --plate: #1b2027;
+  --seam: #323a45; /* décoratif seulement */
+  --cream: #ece8df;
   --muted: #9aa6bf;
-  --burgundy: #a3234a; /* aplat avec on-burgundy, jamais du texte sur ink */
+  --signal: #d3202f; /* le K uniquement */
   --gold: #e8b64c;
-  --caramel: #c98b4e;
-  --violet: #7e008d; /* aplat avec on-violet, jamais du texte */
-  --violet-light: #c98bd6;
   --on-gold: var(--ink);
-  --on-burgundy: var(--cream);
-  --on-violet: var(--cream);
 }
 :root {
   --space-1: 4px;

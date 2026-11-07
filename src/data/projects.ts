@@ -16,8 +16,8 @@ export const cpp: Project[] = [
   {
     repo: 'kronkworld',
     description: {
-      fr: 'Un ECS léger en C++, en en-têtes seuls.',
-      en: 'A light header-only ECS, in C++.',
+      fr: 'Un ECS léger en C++.',
+      en: 'A light ECS, in C++.',
     },
   },
   {
@@ -65,13 +65,6 @@ export const clibs: Project[] = [
     description: {
       fr: 'Un analyseur d’arguments pour les programmes en C.',
       en: 'A simple argument parser library, for C programs.',
-    },
-  },
-  {
-    repo: 'kronkutils-C',
-    description: {
-      fr: 'Les outils de base en C pour les autres projets : kronkmail, kronkflow…',
-      en: 'Basic tools in C for other project development: kronkmail, kronkflow…',
     },
   },
 ];

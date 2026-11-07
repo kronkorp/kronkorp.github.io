@@ -18,6 +18,9 @@ const groups: { id: string; label: string; projects: Project[] }[] = [
 <Base lang={lang} title={t.meta.title} description={t.meta.description}>
   <a class="skip" href="#main">{t.skip}</a>
 
+  <div class="rail rail--l" aria-hidden="true">Kronk Corp</div>
+  <div class="rail rail--r" aria-hidden="true">C++20 / C</div>
+
   <div class="container">
     <header class="topbar">
       <nav class="lang" aria-label={t.langLabel}>
@@ -40,8 +43,19 @@ const groups: { id: string; label: string; projects: Project[] }[] = [
     <main id="main">
       <section class="hero">
         <h1 class="wordmark">
-          <img class="wordmark__k" src="/img/k.svg" alt="" width="161" height="100" />
-          <span>Kronk corp</span>
+          <svg class="wordmark__k" viewBox="20 20 161 100" aria-hidden="true">
+            <defs>
+              <clipPath id="kshape"><path d="M181.0,20.0 L153.0,20.0 L132.1,58.0 L113.0,20.0 L75.0,20.0 L93.5,70.0 L20.0,120.0 L58.0,120.0 L118.9,82.0 L98.0,120.0 L126.0,120.0Z" /></clipPath>
+              <clipPath id="kb1"><rect x="0" y="0" width="200" height="52" /></clipPath>
+              <clipPath id="kb2"><rect x="0" y="52" width="200" height="38" /></clipPath>
+              <clipPath id="kb3"><rect x="0" y="90" width="200" height="40" /></clipPath>
+            </defs>
+            <g clip-path="url(#kb1)"><path class="k__plate k__plate--1" d="M181.0,20.0 L153.0,20.0 L132.1,58.0 L113.0,20.0 L75.0,20.0 L93.5,70.0 L20.0,120.0 L58.0,120.0 L118.9,82.0 L98.0,120.0 L126.0,120.0Z" /></g>
+            <g clip-path="url(#kb2)"><path class="k__plate k__plate--2" d="M181.0,20.0 L153.0,20.0 L132.1,58.0 L113.0,20.0 L75.0,20.0 L93.5,70.0 L20.0,120.0 L58.0,120.0 L118.9,82.0 L98.0,120.0 L126.0,120.0Z" /></g>
+            <g clip-path="url(#kb3)"><path class="k__plate k__plate--3" d="M181.0,20.0 L153.0,20.0 L132.1,58.0 L113.0,20.0 L75.0,20.0 L93.5,70.0 L20.0,120.0 L58.0,120.0 L118.9,82.0 L98.0,120.0 L126.0,120.0Z" /></g>
+            <rect class="k__scan" clip-path="url(#kshape)" x="0" y="20" width="10" height="100" />
+          </svg>
+          <span>Kronk Corp</span>
         </h1>
         <p class="hero__lead">{t.hero.lead}</p>
         <p class="hero__link"><a href={ORG_URL}>{t.hero.cta}</a></p>
@@ -49,7 +63,7 @@ const groups: { id: string; label: string; projects: Project[] }[] = [
 
       <section class="block" aria-labelledby="kuge-label">
         <h2 class="label" id="kuge-label">{t.kuge.label}</h2>
-        <div class="block__body">
+        <div class="block__body panel">
           <h3 class="kuge__name"><a href={repoUrl('KUGE')}>KUGE</a></h3>
           <p class="kuge__lead">{t.kuge.lead}</p>
           <ul class="modules">
@@ -61,7 +75,7 @@ const groups: { id: string; label: string; projects: Project[] }[] = [
 
       {
         groups.map((g) => (
-          <section class="block" aria-labelledby={`${g.id}-label`}>
+          <section class={`block block--${g.id}`} aria-labelledby={`${g.id}-label`}>
             <h2 class="label" id={`${g.id}-label`}>{g.label}</h2>
             <ul class="rows">
               {g.projects.map((p) => (
@@ -85,7 +99,7 @@ const groups: { id: string; label: string; projects: Project[] }[] = [
     </main>
 
     <footer class="site-footer">
-      <span>Kronk corp</span>
+      <span>Kronk Corp</span>
       <a href={ORG_URL}>{t.footer.org}</a>
     </footer>
   </div>

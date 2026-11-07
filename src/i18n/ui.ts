@@ -20,9 +20,9 @@ interface UI {
 export const ui: Record<Lang, UI> = {
   fr: {
     meta: {
-      title: 'Kronk corp',
+      title: 'Kronk Corp',
       description:
-        'Kronk corp : un moteur de jeu C++20, des bibliothèques C et leurs outils. Le code est sur GitHub.',
+        'Kronk Corp : un moteur de jeu C++20, des bibliothèques C et leurs outils. Le code est sur GitHub.',
     },
     skip: 'Aller au contenu',
     langLabel: 'Langue',
@@ -39,13 +39,13 @@ export const ui: Record<Lang, UI> = {
     cpp: { label: 'C++' },
     clibs: { label: 'Bibliothèques C' },
     site: 'Page du projet',
-    footer: { org: 'Kronk corp sur GitHub' },
+    footer: { org: 'Kronk Corp sur GitHub' },
   },
   en: {
     meta: {
-      title: 'Kronk corp',
+      title: 'Kronk Corp',
       description:
-        'Kronk corp: a C++20 game engine, C libraries and their tools. The code is on GitHub.',
+        'Kronk Corp: a C++20 game engine, C libraries and their tools. The code is on GitHub.',
     },
     skip: 'Skip to content',
     langLabel: 'Language',
@@ -62,6 +62,6 @@ export const ui: Record<Lang, UI> = {
     cpp: { label: 'C++' },
     clibs: { label: 'C libraries' },
     site: 'Project page',
-    footer: { org: 'Kronk corp on GitHub' },
+    footer: { org: 'Kronk Corp on GitHub' },
   },
 };

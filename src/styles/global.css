@@ -1,5 +1,5 @@
 /* Mise en page du site : sobre, typographique. Les valeurs viennent de tokens.css.
-   Couleur : ink, cream, muted. Le rouge n'apparaît que dans le K. L'or sert au survol et au focus. */
+   Urban-tek : rails verticaux, joints, un panneau chanfreiné. Le rouge n'apparaît que dans le K. L'or sert au survol, au focus et au filet rayé du pied de page. */
 *,
 *::before,
 *::after {
@@ -14,6 +14,7 @@ html {
 
 body {
   --gutter: clamp(20px, 5vw, 48px);
+  --rail: 56px;
   margin: 0;
   background: var(--ink);
   color: var(--cream);
@@ -37,6 +38,44 @@ a:hover {
 :focus-visible {
   outline: 2px solid var(--gold);
   outline-offset: 3px;
+}
+
+@media (min-width: 64rem) {
+  body {
+    --gutter: 104px;
+  }
+}
+
+/* Rails : texte vertical fixe dans les marges, seulement sur grand écran */
+.rail {
+  display: none;
+}
+@media (min-width: 64rem) {
+  .rail {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: var(--rail);
+    writing-mode: vertical-rl;
+    font: 700 0.8125rem/1 var(--font-display);
+    letter-spacing: 0.5em;
+    text-transform: uppercase;
+    color: var(--muted);
+    pointer-events: none;
+  }
+  .rail--l {
+    left: 0;
+    border-right: 1px solid var(--seam);
+    transform: rotate(180deg);
+  }
+  .rail--r {
+    right: 0;
+    border-left: 1px solid var(--seam);
+  }
 }
 
 .container {
@@ -102,7 +141,7 @@ a:hover {
 }
 .wordmark__k {
   flex: none;
-  width: auto;
+  width: 1.127em;
   height: 0.7em;
 }
 .hero__lead {
@@ -121,21 +160,32 @@ a:hover {
   gap: var(--space-6) var(--space-12);
   grid-template-columns: minmax(0, 1fr);
   padding-block: clamp(32px, 5vw, 56px);
-  border-top: 1px solid var(--suit-line);
+  border-top: 1px solid var(--seam);
 }
 @media (min-width: 48rem) {
   .block {
-    grid-template-columns: 12rem minmax(0, 1fr);
+    grid-template-columns: 2.5rem minmax(0, 1fr);
+  }
+  .label {
+    writing-mode: vertical-rl;
+    transform: rotate(180deg);
+    justify-self: start;
   }
 }
 .label {
   margin: 0;
-  font-size: 0.8125rem;
-  font-weight: 600;
-  letter-spacing: 0.12em;
-  line-height: 1.5;
+  font: 700 0.875rem/1.5 var(--font-display);
+  letter-spacing: 0.3em;
   text-transform: uppercase;
   color: var(--muted);
+}
+
+/* Panneau KUGE : seul bloc aux coins coupés */
+.panel {
+  padding: var(--space-8);
+  background: var(--plate);
+  box-shadow: inset 3px 0 0 var(--gold);
+  clip-path: polygon(0 0, calc(100% - 28px) 0, 100% 28px, 100% 100%, 28px 100%, 0 calc(100% - 28px));
 }
 
 .block__body > * {
@@ -179,7 +229,7 @@ a:hover {
   gap: var(--space-1) var(--space-8);
   grid-template-columns: minmax(0, 1fr);
   padding-block: var(--space-4);
-  border-top: 1px solid var(--suit-line);
+  border-top: 1px solid var(--seam);
 }
 .row:first-child {
   padding-top: 0;
@@ -211,15 +261,83 @@ a:hover {
   color: var(--gold);
 }
 
+/* Repères de cadrage du hero */
+.hero {
+  position: relative;
+}
+.hero::before,
+.hero::after {
+  content: '';
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  border: 0 solid var(--muted);
+}
+.hero::before {
+  top: 0;
+  left: 0;
+  border-width: 1px 0 0 1px;
+}
+.hero::after {
+  right: 0;
+  bottom: var(--space-8);
+  border-width: 0 1px 1px 0;
+}
+
+/* K : trois plaques qui s'assemblent, puis un balayage. Une seule fois. */
+.k__plate {
+  fill: var(--signal);
+}
+.k__scan {
+  fill: #fff;
+  opacity: 0;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .k__plate {
+    animation: k-in 0.6s steps(6, end) backwards;
+  }
+  .k__plate--1 {
+    --from: -130px;
+    animation-delay: 0.1s;
+  }
+  .k__plate--2 {
+    --from: 130px;
+    animation-delay: 0.3s;
+  }
+  .k__plate--3 {
+    --from: -130px;
+    animation-delay: 0.5s;
+  }
+  .k__scan {
+    animation: k-scan 0.7s linear 1.2s backwards;
+  }
+}
+@keyframes k-in {
+  from {
+    transform: translateX(var(--from));
+  }
+}
+@keyframes k-scan {
+  0% {
+    transform: translateX(10px);
+    opacity: 0.85;
+  }
+  100% {
+    transform: translateX(180px);
+    opacity: 0.85;
+  }
+}
+
 /* Pied de page */
 .site-footer {
+  position: relative;
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
   gap: var(--space-2) var(--space-8);
   margin-top: var(--space-12);
   padding-block: var(--space-8);
-  border-top: 1px solid var(--suit-line);
+  border-top: 1px solid var(--seam);
   font-size: 0.875rem;
   color: var(--muted);
 }
@@ -228,4 +346,47 @@ a:hover {
 }
 .site-footer a:hover {
   color: var(--cream);
+}
+
+/* Touches de couleur : repères sur les modules et les dépôts, barre de fin */
+.block--cpp {
+  --tick: var(--gold);
+}
+.block--c {
+  --tick: var(--signal);
+}
+.row__name::before,
+.modules li::before {
+  content: '';
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  margin-right: var(--space-3);
+  background: var(--tick, var(--gold));
+}
+.modules li::before {
+  width: 6px;
+  height: 6px;
+  margin-right: var(--space-2);
+  vertical-align: 1px;
+}
+.row__name:hover::before {
+  background: var(--cream);
+}
+.kuge__name::before {
+  content: '';
+  display: block;
+  width: 48px;
+  height: 6px;
+  margin-bottom: var(--space-4);
+  background: linear-gradient(90deg, var(--signal) 0 16px, var(--gold) 16px 32px, var(--cream) 32px);
+}
+.site-footer::before {
+  content: '';
+  position: absolute;
+  top: -1px;
+  left: 0;
+  width: 96px;
+  height: 3px;
+  background: linear-gradient(90deg, var(--signal) 0 32px, var(--gold) 32px 64px, var(--cream) 64px);
 }
