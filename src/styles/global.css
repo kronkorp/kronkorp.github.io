@@ -1,5 +1,5 @@
-/* Mise en page du site. Les composants kc-* sont dans components.css, les valeurs dans tokens.css.
-   Échelle web : les styles du design system (1920×1080) divisés par deux environ. */
+/* Mise en page du site : sobre, typographique. Les valeurs viennent de tokens.css.
+   Couleur : ink, cream, muted. Le rouge n'apparaît que dans le K. L'or sert au survol et au focus. */
 *,
 *::before,
 *::after {
@@ -27,11 +27,12 @@ img {
 }
 
 a {
-  color: var(--gold);
-  text-underline-offset: 0.2em;
+  color: var(--cream);
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.25em;
 }
 a:hover {
-  color: var(--cream);
+  color: var(--gold);
 }
 :focus-visible {
   outline: 2px solid var(--gold);
@@ -39,7 +40,7 @@ a:hover {
 }
 
 .container {
-  width: min(100% - 2 * var(--gutter), 72rem);
+  width: min(100% - 2 * var(--gutter), 64rem);
   margin-inline: auto;
 }
 
@@ -48,9 +49,8 @@ a:hover {
   left: var(--space-4);
   top: var(--space-4);
   padding: var(--space-2) var(--space-4);
-  background: var(--gold);
-  color: var(--on-gold);
-  border-radius: var(--radius-sm);
+  background: var(--cream);
+  color: var(--ink);
   transform: translateY(-200%);
 }
 .skip:focus {
@@ -58,45 +58,11 @@ a:hover {
   z-index: 10;
 }
 
-.caption {
-  margin: 0;
-  font-size: 0.875rem;
-  color: var(--muted);
-}
-
-/* En-tête */
-.site-header {
+/* Barre du haut : seulement la langue */
+.topbar {
   display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: space-between;
-  gap: var(--space-4) var(--space-8);
+  justify-content: flex-end;
   padding-block: var(--space-6);
-}
-.brand {
-  display: inline-flex;
-  align-items: center;
-  gap: var(--space-3);
-  color: var(--cream);
-  font: 700 1.125rem/1 var(--font-display);
-  text-decoration: none;
-}
-.brand img {
-  border-radius: var(--radius-full);
-}
-.site-nav {
-  display: flex;
-  flex-wrap: wrap;
-  gap: var(--space-2) var(--space-6);
-  margin-left: auto;
-  font-size: 0.9375rem;
-}
-.site-nav a {
-  color: var(--cream);
-  text-decoration: none;
-}
-.site-nav a:hover {
-  color: var(--gold);
 }
 .lang {
   display: flex;
@@ -106,134 +72,160 @@ a:hover {
   letter-spacing: 0.12em;
 }
 .lang a {
+  color: var(--muted);
   text-decoration: none;
+}
+.lang a:hover {
+  color: var(--cream);
 }
 .lang a[aria-current='page'] {
   color: var(--cream);
   text-decoration: underline;
-  text-decoration-color: var(--gold);
-  text-decoration-thickness: 2px;
   text-underline-offset: 0.35em;
 }
 
-/* Affiche d'accueil : la typographie porte la page, sans bloc de couleur */
+/* Titre : une ligne, étalée sur toute la largeur.
+   Lexend Zetta 600 mesure 9,06 em pour « Kronk corp », hauteur de capitale 0,70 em.
+   Le K fait 0,70 em de haut (161×100) soit 1,13 em de large, plus 0,35 em d'écart : 10,5 em. */
 .hero {
-  padding-top: clamp(40px, 8vw, 112px);
-  padding-bottom: clamp(64px, 10vw, 144px);
+  container-type: inline-size;
+  padding-top: clamp(32px, 8vw, 96px);
+  padding-bottom: clamp(56px, 9vw, 112px);
 }
-.hero__title {
-  margin: var(--space-4) 0 0;
-  font: 600 clamp(3rem, 15vw, 10rem) / 1.02 var(--font-hero);
-  color: var(--cream);
+.wordmark {
+  display: flex;
+  align-items: baseline;
+  gap: 0.35em;
+  margin: 0;
+  font: 600 calc(100cqw / 10.6) / 1 var(--font-hero);
+  white-space: nowrap;
+}
+.wordmark__k {
+  flex: none;
+  width: auto;
+  height: 0.7em;
 }
 .hero__lead {
   max-width: 34rem;
-  margin: var(--space-8) 0 0;
+  margin: var(--space-12) 0 0;
   font-size: clamp(1.125rem, 2vw, 1.375rem);
   line-height: 1.4;
-  color: var(--muted);
 }
-.hero__links {
-  display: flex;
-  flex-wrap: wrap;
-  gap: var(--space-3) var(--space-8);
-  margin: var(--space-8) 0 0;
-  font-weight: 500;
+.hero__link {
+  margin: var(--space-4) 0 0;
 }
 
-/* Sections */
-.section {
-  padding-block: clamp(56px, 9vw, 112px);
-  border-top: 1px solid var(--suit-line);
-  font-size: 1rem;
-}
-.section .kc-section__title {
-  font-size: clamp(1.875rem, 5.5vw, 2.7rem);
-}
-.stack {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-6);
-}
-.stack > p {
-  margin: 0;
-}
-.stack--wide {
-  gap: var(--space-12);
-}
-.kuge {
+/* Blocs : un libellé à gauche, le contenu à droite */
+.block {
   display: grid;
-  gap: var(--space-12);
+  gap: var(--space-6) var(--space-12);
   grid-template-columns: minmax(0, 1fr);
-  align-items: start;
+  padding-block: clamp(32px, 5vw, 56px);
+  border-top: 1px solid var(--suit-line);
 }
-@media (min-width: 56rem) {
-  .kuge {
-    grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
-    gap: var(--space-16);
+@media (min-width: 48rem) {
+  .block {
+    grid-template-columns: 12rem minmax(0, 1fr);
   }
 }
-.kuge__logo {
-  width: min(100%, 360px);
-}
-.badges,
-.chips {
-  display: flex;
-  flex-wrap: wrap;
-  gap: var(--space-2);
-}
-.chips {
-  gap: var(--space-3);
+.label {
+  margin: 0;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  line-height: 1.5;
+  text-transform: uppercase;
+  color: var(--muted);
 }
 
-/* Cartes : tout le bloc est cliquable via le lien du titre */
-.grid {
-  display: grid;
-  gap: var(--space-8);
-  grid-template-columns: repeat(auto-fit, minmax(17.5rem, 1fr));
+.block__body > * {
+  margin: 0;
 }
-.kc-card {
-  position: relative;
+.block__body > * + * {
+  margin-top: var(--space-6);
 }
-.kc-card__title a {
-  color: inherit;
+.kuge__name {
+  font: 700 clamp(2rem, 4vw, 2.75rem) / 1.05 var(--font-display);
+}
+.kuge__name a {
   text-decoration: none;
 }
-.kc-card__title a::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  border-radius: inherit;
+.kuge__name a:hover {
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.2em;
 }
-.kc-card__title a:focus-visible {
-  outline: none;
+.kuge__lead {
+  max-width: 38rem;
 }
-.kc-card:hover,
-.kc-card:focus-within {
-  border-color: var(--gold);
+.modules {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2) var(--space-6);
+  padding: 0;
+  list-style: none;
+  font: 400 0.875rem/1.5 var(--font-mono);
+  color: var(--muted);
 }
-.kc-card:has(.kc-card__title a:focus-visible) {
-  outline: 2px solid var(--gold);
-  outline-offset: 3px;
+
+/* Listes de projets : une ligne par dépôt, sans boîte */
+.rows {
+  margin: 0;
+  padding: 0;
+  list-style: none;
 }
-.kc-card__extra {
-  position: relative;
-  z-index: 1;
-  margin: auto 0 0;
-  padding-top: var(--space-2);
-  font-size: 0.9em;
+.row {
+  display: grid;
+  gap: var(--space-1) var(--space-8);
+  grid-template-columns: minmax(0, 1fr);
+  padding-block: var(--space-4);
+  border-top: 1px solid var(--suit-line);
+}
+.row:first-child {
+  padding-top: 0;
+  border-top: 0;
+}
+.row:last-child {
+  padding-bottom: 0;
+}
+@media (min-width: 40rem) {
+  .row {
+    grid-template-columns: 13rem minmax(0, 1fr);
+  }
+}
+.row__name {
+  font: 400 0.9375rem/1.5 var(--font-mono);
+  text-decoration: none;
+}
+.row__name:hover {
+  text-decoration: underline;
+}
+.row__text {
+  margin: 0;
+  color: var(--muted);
+}
+.row__text a {
+  color: var(--cream);
+}
+.row__text a:hover {
+  color: var(--gold);
 }
 
 /* Pied de page */
 .site-footer {
-  border-top: 1px solid var(--suit-line);
-  padding-block: var(--space-8);
-  font-size: 0.875rem;
-  color: var(--muted);
-}
-.site-footer__inner {
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
   gap: var(--space-2) var(--space-8);
+  margin-top: var(--space-12);
+  padding-block: var(--space-8);
+  border-top: 1px solid var(--suit-line);
+  font-size: 0.875rem;
+  color: var(--muted);
+}
+.site-footer a {
+  color: var(--muted);
+}
+.site-footer a:hover {
+  color: var(--cream);
 }

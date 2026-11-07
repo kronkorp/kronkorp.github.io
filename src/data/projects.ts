@@ -1,12 +1,9 @@
 import type { Lang } from '../i18n/ui';
 
-type L10n = Record<Lang, string>;
-
 export interface Project {
   /** Nom exact du dépôt dans l'orga. */
   repo: string;
-  title: L10n;
-  description: L10n;
+  description: Record<Lang, string>;
   /** Page du projet, si elle existe en dehors du dépôt. */
   homepage?: string;
 }
@@ -18,7 +15,6 @@ export const repoUrl = (repo: string) => `${ORG_URL}/${repo}`;
 export const cpp: Project[] = [
   {
     repo: 'kronkworld',
-    title: { fr: 'ECS', en: 'ECS' },
     description: {
       fr: 'Un ECS léger en C++, en en-têtes seuls.',
       en: 'A light header-only ECS, in C++.',
@@ -26,7 +22,6 @@ export const cpp: Project[] = [
   },
   {
     repo: 'kronk3d',
-    title: { fr: 'Rasterizer 3D', en: '3D rasterizer' },
     description: {
       fr: 'Un rasterizer 3D matériel, rapide et moderne.',
       en: 'A super fast and modern 3D hardware rasterizer.',
@@ -38,7 +33,6 @@ export const cpp: Project[] = [
 export const clibs: Project[] = [
   {
     repo: 'kronknet',
-    title: { fr: 'Réseau', en: 'Network' },
     description: {
       fr: 'Une bibliothèque réseau bas niveau en C.',
       en: 'A low level network library in C.',
@@ -47,7 +41,6 @@ export const clibs: Project[] = [
   },
   {
     repo: 'kronkflow',
-    title: { fr: 'Ordonnanceur', en: 'Scheduler' },
     description: {
       fr: 'Un petit ordonnanceur de tâches en C, fait pour le projet zappy.',
       en: 'A tiny task scheduler in C, built for the zappy project.',
@@ -55,7 +48,6 @@ export const clibs: Project[] = [
   },
   {
     repo: 'kronkpool',
-    title: { fr: 'Pool de threads', en: 'Thread pool' },
     description: {
       fr: 'Un pool de threads simple en C, avec pthread.',
       en: 'A simple thread pool in C using pthread.',
@@ -63,7 +55,6 @@ export const clibs: Project[] = [
   },
   {
     repo: 'kronklab',
-    title: { fr: 'Tests', en: 'Testing' },
     description: {
       fr: 'Un framework de tests simple en C.',
       en: 'A simple test framework in C.',
@@ -71,7 +62,6 @@ export const clibs: Project[] = [
   },
   {
     repo: 'kronkargs',
-    title: { fr: 'Arguments', en: 'Arguments' },
     description: {
       fr: 'Un analyseur d’arguments pour les programmes en C.',
       en: 'A simple argument parser library, for C programs.',
@@ -79,7 +69,6 @@ export const clibs: Project[] = [
   },
   {
     repo: 'kronkutils-C',
-    title: { fr: 'Utilitaires', en: 'Utilities' },
     description: {
       fr: 'Les outils de base en C pour les autres projets : kronkmail, kronkflow…',
       en: 'Basic tools in C for other project development: kronkmail, kronkflow…',

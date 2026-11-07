@@ -16,14 +16,16 @@ npm run preview   # sert dist/
 | Fichier | Contenu |
 | --- | --- |
 | `src/i18n/ui.ts` | Tous les textes de la page, en `fr` et en `en` |
-| `src/data/projects.ts` | Les projets affichés (dépôt, titre et description par langue) |
+| `src/data/projects.ts` | Les projets affichés (dépôt et description par langue) |
 | `src/components/Home.astro` | La page, partagée par les deux langues |
 | `src/styles/tokens.css` | Couleurs, espaces, polices : repris du design system Kronk corp |
-| `src/styles/components.css` | Composants `kc-*` du design system |
-| `src/styles/global.css` | Mise en page du site |
-| `public/fonts`, `public/img` | Polices et logos du design system |
+| `src/styles/global.css` | Mise en page du site, y compris le titre étalé sur une ligne |
+| `public/fonts` | Polices du design system |
+| `public/img/k.svg`, `public/favicon.svg` | Le K rouge de KUGE, recadré sur ses bords, pour le titre et le favicon |
 
 Ajouter un projet : une entrée dans `src/data/projects.ts`, avec son texte en `fr` et en `en`. `kronkmail` est privé et n'y figure pas.
+
+Le titre « Kronk corp » prend toute la largeur : sa taille vaut la largeur du conteneur divisée par 10,6 (largeur mesurée de Lexend Zetta 600, plus le K). Si le K ou la police changent, il faut remesurer ce rapport dans `global.css`.
 
 ## Déploiement
 
