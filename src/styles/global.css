@@ -390,3 +390,69 @@ a:hover {
   height: 3px;
   background: linear-gradient(90deg, var(--signal) 0 32px, var(--gold) 32px 64px, var(--cream) 64px);
 }
+
+/* Texte d'accueil et pages projet */
+.about p {
+  max-width: 38rem;
+}
+.members {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2) var(--space-6);
+  font-size: 0.9375rem;
+  color: var(--muted);
+}
+.members span {
+  color: var(--cream);
+  font-weight: 600;
+}
+.members a {
+  color: var(--muted);
+}
+.members a:hover {
+  color: var(--gold);
+}
+.project-head {
+  padding-block: clamp(24px, 5vw, 64px) clamp(32px, 5vw, 56px);
+}
+.back {
+  margin: 0 0 var(--space-8);
+  font-size: 0.875rem;
+}
+.back a {
+  color: var(--muted);
+}
+.project-name {
+  margin: 0;
+  font: 700 clamp(2.5rem, 8vw, 5.5rem) / 1 var(--font-display);
+  overflow-wrap: anywhere;
+}
+.project-name::before {
+  content: '';
+  display: block;
+  width: 48px;
+  height: 6px;
+  margin-bottom: var(--space-6);
+  background: linear-gradient(90deg, var(--signal) 0 16px, var(--gold) 16px 32px, var(--cream) 32px);
+}
+.project-head .hero__link a + a {
+  margin-left: var(--space-6);
+}
+.example {
+  margin: 0;
+}
+.example figcaption {
+  margin-bottom: var(--space-3);
+  font-weight: 600;
+}
+.example pre.astro-code {
+  margin: 0;
+  padding: var(--space-6);
+  overflow-x: auto;
+  background-color: var(--plate) !important;
+  box-shadow: inset 3px 0 0 var(--gold);
+  font: 400 0.8125rem/1.6 var(--font-mono);
+}
+.block__body > .example + .example {
+  margin-top: var(--space-8);
+}

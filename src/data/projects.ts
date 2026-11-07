@@ -9,6 +9,23 @@ export interface Project {
 }
 
 export const ORG_URL = 'https://github.com/kronkorp';
+export const projectPath = (repo: string, lang: Lang) =>
+  lang === 'fr' ? `/projets/${repo}/` : `/en/projects/${repo}/`;
+
+/** Écosystème moteur : KUGE a sa propre section sur l'accueil. */
+export const kuge: Project = {
+  repo: 'KUGE',
+  description: { fr: 'Un moteur de jeu C++20 fait de briques indépendantes.', en: 'A C++20 game engine made of independent blocks.' },
+};
+
+export const members = [
+  { name: 'Gauthier Malfilatre', login: 'GauthierMalfilatre' },
+  { name: 'Ethan Bertin--Prévot', login: 'YknotTYD' },
+  { name: 'Clement Devaux', login: 'clementd-tek' },
+  { name: 'Julian Hemmer', login: 'julian-hemmer' },
+  { name: 'Romain Marcot', login: 'NetCatRunner' },
+];
+
 export const repoUrl = (repo: string) => `${ORG_URL}/${repo}`;
 
 /** Écosystème C++ (hors KUGE, qui a sa propre section). */

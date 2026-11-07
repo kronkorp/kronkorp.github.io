@@ -7,10 +7,12 @@ interface Props {
   lang: Lang;
   title: string;
   description: string;
+  /** Chemin de cette page dans chaque langue. */
+  paths?: Record<Lang, string>;
 }
-const { lang, title, description } = Astro.props;
+const { lang, title, description, paths = { fr: languages.fr.path, en: languages.en.path } } = Astro.props;
 const abs = (path: string) => new URL(path, Astro.site).href;
-const canonical = abs(languages[lang].path);
+const canonical = abs(paths[lang]);
 ---
 
 <!doctype html>
@@ -23,11 +25,11 @@ const canonical = abs(languages[lang].path);
     <meta name="theme-color" content="#161616" />
     <link rel="canonical" href={canonical} />
     {
-      Object.entries(languages).map(([code, l]) => (
-        <link rel="alternate" hreflang={code} href={abs(l.path)} />
+      Object.entries(paths).map(([code, path]) => (
+        <link rel="alternate" hreflang={code} href={abs(path)} />
       ))
     }
-    <link rel="alternate" hreflang="x-default" href={abs('/')} />
+    <link rel="alternate" hreflang="x-default" href={abs(paths.fr)} />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 
     <meta property="og:type" content="website" />
@@ -48,6 +50,8 @@ const canonical = abs(languages[lang].path);
     />
   </head>
   <body>
+    <div class="rail rail--l" aria-hidden="true">Kronk Corp</div>
+    <div class="rail rail--r" aria-hidden="true">C++20 / C</div>
     <slot />
   </body>
 </html>

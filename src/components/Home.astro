@@ -1,7 +1,8 @@
 ---
 import Base from '../layouts/Base.astro';
+import LangNav from './LangNav.astro';
 import { languages, ui, type Lang } from '../i18n/ui';
-import { clibs, cpp, ORG_URL, repoUrl, type Project } from '../data/projects';
+import { clibs, cpp, members, ORG_URL, projectPath, type Project } from '../data/projects';
 
 interface Props {
   lang: Lang;
@@ -18,27 +19,8 @@ const groups: { id: string; label: string; projects: Project[] }[] = [
 <Base lang={lang} title={t.meta.title} description={t.meta.description}>
   <a class="skip" href="#main">{t.skip}</a>
 
-  <div class="rail rail--l" aria-hidden="true">Kronk Corp</div>
-  <div class="rail rail--r" aria-hidden="true">C++20 / C</div>
-
   <div class="container">
-    <header class="topbar">
-      <nav class="lang" aria-label={t.langLabel}>
-        {
-          (Object.keys(languages) as Lang[]).map((code) => (
-            <a
-              href={languages[code].path}
-              hreflang={code}
-              lang={code}
-              aria-label={languages[code].name}
-              aria-current={code === lang ? 'page' : undefined}
-            >
-              {languages[code].short}
-            </a>
-          ))
-        }
-      </nav>
-    </header>
+    <LangNav lang={lang} paths={{ fr: languages.fr.path, en: languages.en.path }} />
 
     <main id="main">
       <section class="hero">
@@ -61,15 +43,26 @@ const groups: { id: string; label: string; projects: Project[] }[] = [
         <p class="hero__link"><a href={ORG_URL}>{t.hero.cta}</a></p>
       </section>
 
+      <section class="block" aria-labelledby="about-label">
+        <h2 class="label" id="about-label">{t.about.label}</h2>
+        <div class="block__body about">
+          {t.about.paragraphs.map((p) => <p>{p}</p>)}
+          <p class="members">
+            <span>{t.about.members}</span>
+            {members.map((m) => <a href={`https://github.com/${m.login}`}>{m.name}</a>)}
+          </p>
+        </div>
+      </section>
+
       <section class="block" aria-labelledby="kuge-label">
         <h2 class="label" id="kuge-label">{t.kuge.label}</h2>
         <div class="block__body panel">
-          <h3 class="kuge__name"><a href={repoUrl('KUGE')}>KUGE</a></h3>
+          <h3 class="kuge__name"><a href={projectPath('KUGE', lang)}>KUGE</a></h3>
           <p class="kuge__lead">{t.kuge.lead}</p>
           <ul class="modules">
             {t.kuge.modules.map((m) => <li>{m}</li>)}
           </ul>
-          <p><a href={repoUrl('KUGE')}>{t.kuge.cta}</a></p>
+          <p><a href={projectPath('KUGE', lang)}>{t.kuge.cta}</a></p>
         </div>
       </section>
 
@@ -80,7 +73,7 @@ const groups: { id: string; label: string; projects: Project[] }[] = [
             <ul class="rows">
               {g.projects.map((p) => (
                 <li class="row">
-                  <a class="row__name" href={repoUrl(p.repo)}>{p.repo}</a>
+                  <a class="row__name" href={projectPath(p.repo, lang)}>{p.repo}</a>
                   <p class="row__text">
                     {p.description[lang]}
                     {p.homepage && (

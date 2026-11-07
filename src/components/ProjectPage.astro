@@ -1,0 +1,72 @@
+---
+import { Code } from 'astro:components';
+import Base from '../layouts/Base.astro';
+import LangNav from './LangNav.astro';
+import { languages, ui, type Lang } from '../i18n/ui';
+import { details } from '../data/details';
+import { projectPath, repoUrl, type Project } from '../data/projects';
+
+interface Props {
+  lang: Lang;
+  project: Project;
+}
+const { lang, project } = Astro.props;
+const t = ui[lang];
+const d = details[project.repo];
+const paths = { fr: projectPath(project.repo, 'fr'), en: projectPath(project.repo, 'en') };
+---
+
+<Base lang={lang} title={`${project.repo} | Kronk Corp`} description={t.projectMeta(project.repo)} paths={paths}>
+  <a class="skip" href="#main">{t.skip}</a>
+
+  <div class="container">
+    <LangNav lang={lang} paths={paths} />
+
+    <main id="main">
+      <section class="project-head">
+        <p class="back"><a href={languages[lang].path}>{t.project.back}</a></p>
+        <h1 class="project-name">{project.repo}</h1>
+        <p class="hero__lead">{project.description[lang]}</p>
+        <p class="hero__link">
+          <a href={repoUrl(project.repo)}>{t.project.github}</a>
+          {
+            project.homepage && (
+              <>
+                {' '}
+                <a href={project.homepage}>{t.project.site}</a>
+              </>
+            )
+          }
+        </p>
+      </section>
+
+      <section class="block" aria-labelledby="about-label">
+        <h2 class="label" id="about-label">{t.project.about}</h2>
+        <div class="block__body about">
+          {d.about[lang].map((p) => <p>{p}</p>)}
+        </div>
+      </section>
+
+      {
+        d.examples.length > 0 && (
+          <section class="block" aria-labelledby="ex-label">
+            <h2 class="label" id="ex-label">{t.project.examples}</h2>
+            <div class="block__body">
+              {d.examples.map((e) => (
+                <figure class="example">
+                  <figcaption>{e.title[lang]}</figcaption>
+                  <Code code={e.code} lang={e.lang} theme="github-dark" />
+                </figure>
+              ))}
+            </div>
+          </section>
+        )
+      }
+    </main>
+
+    <footer class="site-footer">
+      <span>Kronk Corp</span>
+      <a href={repoUrl(project.repo)}>{project.repo} GitHub</a>
+    </footer>
+  </div>
+</Base>

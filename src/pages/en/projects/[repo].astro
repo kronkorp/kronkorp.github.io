@@ -1,0 +1,11 @@
+---
+import ProjectPage from '../../../components/ProjectPage.astro';
+import { clibs, cpp, kuge } from '../../../data/projects';
+
+export function getStaticPaths() {
+  return [kuge, ...cpp, ...clibs].map((project) => ({ params: { repo: project.repo }, props: { project } }));
+}
+const { project } = Astro.props;
+---
+
+<ProjectPage lang="en" project={project} />

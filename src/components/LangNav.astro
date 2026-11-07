@@ -1,0 +1,27 @@
+---
+import { languages, ui, type Lang } from '../i18n/ui';
+
+interface Props {
+  lang: Lang;
+  paths: Record<Lang, string>;
+}
+const { lang, paths } = Astro.props;
+---
+
+<header class="topbar">
+  <nav class="lang" aria-label={ui[lang].langLabel}>
+    {
+      (Object.keys(languages) as Lang[]).map((code) => (
+        <a
+          href={paths[code]}
+          hreflang={code}
+          lang={code}
+          aria-label={languages[code].name}
+          aria-current={code === lang ? 'page' : undefined}
+        >
+          {languages[code].short}
+        </a>
+      ))
+    }
+  </nav>
+</header>
