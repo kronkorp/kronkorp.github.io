@@ -420,6 +420,31 @@ enum Stage : size_t { Startup, Update, Render };
 world.addSystem(Update, std::make_unique<MovementSystem>());`,
       },
     ],
+    changelog: [
+      {
+        version: '1.0.0',
+        date: '2026-11-07',
+        groups: [
+          {
+            title: { fr: 'Première version stable', en: 'First stable release' },
+            items: {
+              fr: [
+                'world.spawn crée une entité avec tous ses composants en un seul appel.',
+                'Correctif : parcourir une vue vide ne pose plus de problème.',
+                'Compile sous Windows (MSVC) ; kronklab et kronkflow sont épinglés à une version précise.',
+                'Nouveau test de non-régression pour World::remove sur un composant.',
+              ],
+              en: [
+                'world.spawn creates an entity with all its components in one call.',
+                'Fix: iterating an empty view no longer goes wrong.',
+                'Builds on Windows (MSVC); kronklab and kronkflow are pinned to a set version.',
+                'New regression test for World::remove on a component.',
+              ],
+            },
+          },
+        ],
+      },
+    ],
   },
 
   kronk3d: {
@@ -547,6 +572,38 @@ int main(void)
 }`,
       },
     ],
+    changelog: [
+      {
+        version: '1.2.0',
+        date: '2026-09-23',
+        groups: [
+          {
+            title: { fr: 'Performances', en: 'Performance' },
+            items: {
+              fr: ['poll() est remplacé par epoll(), qui tient bien mieux un très grand nombre de clients.'],
+              en: ['poll() is replaced by epoll(), which handles a very large number of clients much better.'],
+            },
+          },
+          {
+            title: { fr: 'Projet', en: 'Project' },
+            items: {
+              fr: [
+                'Correctif du délai d’expiration TCP.',
+                'Le dossier mkn/, une ancienne version modulaire devenue inutile, est supprimé.',
+                'Les tests se construisent depuis la racine (-DBUILD_TESTS=ON) avec kronklab, et la CI les lance.',
+                'Modèles de PR et d’issue.',
+              ],
+              en: [
+                'TCP timeout fix.',
+                'The mkn/ folder, an old modular version that had become useless, is removed.',
+                'Tests build from the root (-DBUILD_TESTS=ON) with kronklab, and the CI runs them.',
+                'PR and issue templates.',
+              ],
+            },
+          },
+        ],
+      },
+    ],
   },
 
   kronkflow: {
@@ -598,6 +655,21 @@ int main(void)
     kfScheduler_destroy(sch);
     return 0;
 }`,
+      },
+    ],
+    changelog: [
+      {
+        version: '1.2.0',
+        date: '2026-11-07',
+        groups: [
+          {
+            title: { fr: 'Windows', en: 'Windows' },
+            items: {
+              fr: ['Compile et tourne sous Windows, avec MSVC et MinGW ; les dépendances sont épinglées à une version précise.'],
+              en: ['Builds and runs on Windows, with MSVC and MinGW; dependencies are pinned to a set version.'],
+            },
+          },
+        ],
       },
     ],
   },
