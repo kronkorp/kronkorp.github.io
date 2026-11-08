@@ -7,9 +7,14 @@ export interface Example {
   code: string;
 }
 
-/** Une version du changelog, découpée par thème. version 'dev' = pas encore publiée. */
+/**
+ * Une version du changelog, découpée par thème. version 'dev' = pas encore publiée.
+ * Chaque version apparaît sur la page du projet et sur la page Nouveautés (triée par date).
+ */
 export interface Release {
   version: string;
+  /** AAAA-MM-JJ, absente pour 'dev'. */
+  date?: string;
   groups: { title: Record<Lang, string>; items: Record<Lang, string[]> }[];
 }
 
@@ -124,7 +129,8 @@ end`,
     ],
     changelog: [
       {
-        version: 'dev',
+        version: '1.0.0',
+        date: '2026-11-08',
         groups: [
           {
             title: { fr: 'Modding en Lua', en: 'Lua modding' },
@@ -223,6 +229,125 @@ end`,
               en: [
                 'The unit tests build and run on Windows.',
                 'Fixes: frame limit, stop signals, kuge.dll, SDL audio, TCP connections.',
+              ],
+            },
+          },
+        ],
+      },
+      {
+        version: '0.3.0',
+        date: '2026-10-22',
+        groups: [
+          {
+            title: { fr: 'Réseau et salons', en: 'Network and rooms' },
+            items: {
+              fr: [
+                'Le jeu choisit qui joue avec qui (ServerConfig::roomPicker).',
+                'Authentification des joueurs, avec un jeton dans les demandes de salon.',
+                'L’adresse de chaque joueur est connue du salon.',
+              ],
+              en: [
+                'The game chooses who plays with whom (ServerConfig::roomPicker).',
+                'Player authentication, with a token in room requests.',
+                'Each player’s address is known to the room.',
+              ],
+            },
+          },
+          {
+            title: { fr: 'Client', en: 'Client' },
+            items: {
+              fr: [
+                'Musique : pause, position, déplacement et fin de lecture.',
+                'L’interface garde l’ordre de création des éléments, et removeUiTree retire un arbre entier.',
+              ],
+              en: [
+                'Music: pause, position, seek and end of playback.',
+                'The UI keeps the order nodes were made in, and removeUiTree removes a whole tree.',
+              ],
+            },
+          },
+        ],
+      },
+      {
+        version: '0.2.0',
+        date: '2026-10-20',
+        groups: [
+          {
+            title: { fr: '3D', en: '3D' },
+            items: {
+              fr: [
+                'Rendu 3D avec kronk3d (CPU ou OpenGL), modèles, animation, caméra orbitale qui s’arrête aux murs, instanciation.',
+                'Physique 3D, hitboxes et contrôleur de personnage ; réplication 3D.',
+                'Arena, un jeu de tir 3D en réseau, avec sons placés et particules.',
+              ],
+              en: [
+                '3D rendering with kronk3d (CPU or OpenGL), models, animation, an orbit camera that stops at walls, instancing.',
+                '3D physics, hitboxes and character controller; 3D replication.',
+                'Arena, a networked 3D shooter, with placed sounds and particles.',
+              ],
+            },
+          },
+          {
+            title: { fr: 'Réseau', en: 'Network' },
+            items: {
+              fr: [
+                'Historique du monde, filtre de visibilité, apparitions prédites, replays et reconnexion.',
+                'Un réseau simulé (latence, pertes) pour tester.',
+              ],
+              en: [
+                'World history, visibility filter, predicted spawns, replays and rejoin.',
+                'A simulated network (latency, loss) for testing.',
+              ],
+            },
+          },
+          {
+            title: { fr: 'Moteur et outils', en: 'Engine and tools' },
+            items: {
+              fr: [
+                'Mods (données), composants accessibles par nom et cinématiques.',
+                'Profileur, options de débogage, console avec variables, chat texte, catégories de logs.',
+                'Animation (kuge-animation) et rebond dans la physique.',
+              ],
+              en: [
+                'Mods (data), components by name and cutscenes.',
+                'Profiler, debug options, console with cvars, text chat, log categories.',
+                'Animation (kuge-animation) and restitution in physics.',
+              ],
+            },
+          },
+          {
+            title: { fr: 'Client', en: 'Client' },
+            items: {
+              fr: [
+                'Interface : presse-papiers, barre de progression, case à cocher, curseur, défilement, images, mise à l’échelle.',
+                'Audio : bus de dialogue, atténuation de la musique, priorités, sons 3D étouffés, streaming.',
+                'Scènes superposées, taille logique de la fenêtre, axes de la souris.',
+              ],
+              en: [
+                'UI: clipboard, progress bar, check box, slider, scrolling, images, scaling.',
+                'Audio: dialogue bus, ducking, priorities, muffled 3D sounds, streaming.',
+                'Overlay scenes, logical window size, mouse axes.',
+              ],
+            },
+          },
+        ],
+      },
+      {
+        version: '0.1.0',
+        date: '2026-10-08',
+        groups: [
+          {
+            title: { fr: 'Première version', en: 'First release' },
+            items: {
+              fr: [
+                'Le cœur du moteur : boucle à pas fixe, scènes, systèmes, fenêtre, dessin 2D, sprites animés, sons, texte et interface avec champ texte.',
+                'Réseau : salons nommés, liste des salons publics, salons privés, prédiction côté client.',
+                'Compile et tourne sous Linux et Windows (MSVC), bibliothèques du client via vcpkg, CI sur chaque PR.',
+              ],
+              en: [
+                'The engine core: fixed-step loop, scenes, systems, window, 2D drawing, animated sprites, sounds, text and UI with a text field.',
+                'Network: named rooms, a list of public rooms, private rooms, client-side prediction.',
+                'Builds and runs on Linux and Windows (MSVC), client libraries from vcpkg, CI on every PR.',
               ],
             },
           },

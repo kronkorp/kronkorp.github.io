@@ -811,6 +811,14 @@ main + .container .site-footer {
   margin: 0;
   font: 700 1.5rem/1.2 var(--font-display);
 }
+.changelog h3 a {
+  color: var(--gold);
+}
+.changelog__date {
+  margin: var(--space-2) 0 0;
+  font-size: 0.875rem;
+  color: var(--muted);
+}
 .changelog h4 {
   margin: var(--space-6) 0 var(--space-2);
   color: var(--gold);

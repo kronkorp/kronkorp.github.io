@@ -9,7 +9,9 @@ interface UI {
   meta: { title: string; description: string };
   skip: string;
   langLabel: string;
-  nav: { label: string; engine: string; libs: string; about: string };
+  nav: { label: string; engine: string; libs: string; about: string; news: string };
+  news: { title: string; lead: string };
+  notFound: { lead: string; home: string };
   hero: { kicker: string; lead: string; cta: string; github: string };
   stats: { projects: string; stars: string; members: string; langs: string };
   kuge: { label: string; lead: string; modules: { name: string; text: string }[]; cta: string; github: string };
@@ -32,7 +34,9 @@ export const ui: Record<Lang, UI> = {
     },
     skip: 'Aller au contenu',
     langLabel: 'Langue',
-    nav: { label: 'Sections', engine: 'Moteur', libs: 'Bibliothèques', about: 'À propos' },
+    nav: { label: 'Sections', engine: 'Moteur', libs: 'Bibliothèques', about: 'À propos', news: 'Nouveautés' },
+    news: { title: 'Nouveautés', lead: 'Les nouvelles versions de tous les projets de Kronk Corp, de la plus récente à la plus ancienne.' },
+    notFound: { lead: 'Cette page n’existe pas, ou plus.', home: 'Retour à l’accueil' },
     hero: {
       kicker: 'Game engine goes brrr',
       lead: 'Un moteur de jeu, des bibliothèques C et leurs outils. Tout est écrit de zéro, et tout est ouvert.',
@@ -92,7 +96,9 @@ export const ui: Record<Lang, UI> = {
     },
     skip: 'Skip to content',
     langLabel: 'Language',
-    nav: { label: 'Sections', engine: 'Engine', libs: 'Libraries', about: 'About' },
+    nav: { label: 'Sections', engine: 'Engine', libs: 'Libraries', about: 'About', news: 'Changelog' },
+    news: { title: 'Changelog', lead: 'New versions of every Kronk Corp project, newest first.' },
+    notFound: { lead: 'This page does not exist, or no longer does.', home: 'Back to home' },
     hero: {
       kicker: 'Game engine goes brrr',
       lead: 'A game engine, C libraries and their tools. Everything is written from scratch, and everything is open.',

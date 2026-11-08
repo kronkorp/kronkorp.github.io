@@ -21,6 +21,7 @@ const home = languages[lang].path;
       <a href={`${home}#kuge`}>{t.nav.engine}</a>
       <a href={`${home}#libs`}>{t.nav.libs}</a>
       <a href={`${home}#about`}>{t.nav.about}</a>
+      <a href={lang === 'fr' ? '/nouveautes/' : '/en/changelog/'}>{t.nav.news}</a>
     </nav>
     <nav class="lang" aria-label={t.langLabel}>
       {

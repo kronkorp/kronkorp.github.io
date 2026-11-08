@@ -1,0 +1,42 @@
+---
+import { ui, type Lang } from '../i18n/ui';
+import type { Release } from '../data/details';
+import { projectPath } from '../data/projects';
+
+interface Props {
+  lang: Lang;
+  /** repo absent : on est déjà sur la page du projet, on ne le répète pas. */
+  entries: { repo?: string; release: Release }[];
+}
+const { lang, entries } = Astro.props;
+const t = ui[lang];
+const fmt = new Intl.DateTimeFormat(lang, { dateStyle: 'long', timeZone: 'UTC' });
+---
+
+<div class="changelog">
+  {
+    entries.map(({ repo, release: r }) => (
+      <article>
+        <h3>
+          {repo && (
+            <>
+              <a href={projectPath(repo, lang)}>{repo}</a>{' '}
+            </>
+          )}
+          {r.version === 'dev' ? t.project.unreleased : r.version}
+        </h3>
+        {r.date && <p class="changelog__date"><time datetime={r.date}>{fmt.format(new Date(r.date))}</time></p>}
+        {r.groups.map((g) => (
+          <>
+            <h4>{g.title[lang]}</h4>
+            <ul>
+              {g.items[lang].map((i) => (
+                <li>{i}</li>
+              ))}
+            </ul>
+          </>
+        ))}
+      </article>
+    ))
+  }
+</div>

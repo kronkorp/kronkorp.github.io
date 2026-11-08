@@ -1,0 +1,22 @@
+---
+// GitHub Pages sert un seul 404.html pour tout le site : la page est donc dans les deux langues.
+import Base from '../layouts/Base.astro';
+import SiteNav from '../components/SiteNav.astro';
+import { ui } from '../i18n/ui';
+---
+
+<Base lang="fr" title="404 | Kronk Corp" description={ui.fr.notFound.lead}>
+  <SiteNav lang="fr" paths={{ fr: '/', en: '/en/' }} />
+
+  <div class="container">
+    <main id="main" class="project-head">
+      <h1 class="project-name">404</h1>
+      <p class="hero__lead">{ui.fr.notFound.lead}</p>
+      <p class="hero__lead" lang="en">{ui.en.notFound.lead}</p>
+      <p class="actions">
+        <a class="btn btn--gold" href="/">{ui.fr.notFound.home}</a>
+        <a class="btn btn--ghost" href="/en/" lang="en">{ui.en.notFound.home}</a>
+      </p>
+    </main>
+  </div>
+</Base>

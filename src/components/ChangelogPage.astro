@@ -1,0 +1,48 @@
+---
+import Base from '../layouts/Base.astro';
+import SiteNav from './SiteNav.astro';
+import Changelog from './Changelog.astro';
+import { languages, ui, type Lang } from '../i18n/ui';
+import { details } from '../data/details';
+import { ORG_URL } from '../data/projects';
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+const t = ui[lang];
+const paths = { fr: '/nouveautes/', en: '/en/changelog/' };
+
+// Toutes les versions de tous les projets : 'dev' (sans date) d'abord, puis la plus récente.
+const entries = Object.entries(details)
+  .flatMap(([repo, d]) => (d.changelog ?? []).map((release) => ({ repo, release })))
+  .sort((a, b) => (b.release.date ?? '9999').localeCompare(a.release.date ?? '9999'));
+---
+
+<Base lang={lang} title={`${t.news.title} | Kronk Corp`} description={t.news.lead} paths={paths}>
+  <a class="skip" href="#main">{t.skip}</a>
+
+  <SiteNav lang={lang} paths={paths} />
+
+  <div class="container">
+    <main id="main">
+      <section class="project-head">
+        <p class="back"><a href={languages[lang].path}>{t.project.back}</a></p>
+        <h1 class="project-name">{t.news.title}</h1>
+        <p class="hero__lead">{t.news.lead}</p>
+      </section>
+
+      <section class="block" aria-labelledby="log-label">
+        <h2 class="label" id="log-label">{t.project.changelog}</h2>
+        <div class="block__body">
+          <Changelog lang={lang} entries={entries} />
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <span>Kronk Corp</span>
+      <a href={ORG_URL}>{t.footer.org}</a>
+    </footer>
+  </div>
+</Base>

@@ -2,6 +2,7 @@
 import { Code } from 'astro:components';
 import Base from '../layouts/Base.astro';
 import SiteNav from './SiteNav.astro';
+import Changelog from './Changelog.astro';
 import { languages, ui, type Lang } from '../i18n/ui';
 import { details } from '../data/details';
 import { projectPath, repoUrl, type Project } from '../data/projects';
@@ -51,22 +52,8 @@ const paths = { fr: projectPath(project.repo, 'fr'), en: projectPath(project.rep
         d.changelog && (
           <section class="block" id="changelog" aria-labelledby="log-label">
             <h2 class="label" id="log-label">{t.project.changelog}</h2>
-            <div class="block__body changelog">
-              {d.changelog.map((r) => (
-                <article>
-                  <h3>{r.version === 'dev' ? t.project.unreleased : r.version}</h3>
-                  {r.groups.map((g) => (
-                    <>
-                      <h4>{g.title[lang]}</h4>
-                      <ul>
-                        {g.items[lang].map((i) => (
-                          <li>{i}</li>
-                        ))}
-                      </ul>
-                    </>
-                  ))}
-                </article>
-              ))}
+            <div class="block__body">
+              <Changelog lang={lang} entries={d.changelog.map((release) => ({ release }))} />
             </div>
           </section>
         )
