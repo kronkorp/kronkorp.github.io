@@ -18,7 +18,7 @@ interface UI {
   clibs: { label: string };
   site: string;
   about: { label: string; paragraphs: string[]; members: string };
-  project: { back: string; about: string; examples: string; github: string; site: string };
+  project: { back: string; about: string; examples: string; changelog: string; unreleased: string; github: string; site: string };
   projectMeta: (name: string) => string;
   footer: { org: string };
 }
@@ -50,6 +50,7 @@ export const ui: Record<Lang, UI> = {
         { name: 'kuge-net', text: 'Le réseau.' },
         { name: 'kuge-server', text: 'Les salons, côté serveur.' },
         { name: 'kuge-replication', text: 'La prédiction côté client.' },
+        { name: 'kuge-script', text: 'Les mods en Lua, dans un bac à sable.' },
       ],
       cta: 'Page du projet',
       github: 'KUGE sur GitHub',
@@ -74,6 +75,8 @@ export const ui: Record<Lang, UI> = {
       back: 'Retour à l’accueil',
       about: 'Présentation',
       examples: 'Exemples',
+      changelog: 'Nouveautés',
+      unreleased: 'Prochaine version (branche dev)',
       github: 'Voir le dépôt sur GitHub',
       site: 'Page du projet',
     },
@@ -107,6 +110,7 @@ export const ui: Record<Lang, UI> = {
         { name: 'kuge-net', text: 'The network.' },
         { name: 'kuge-server', text: 'Lobbies, on the server side.' },
         { name: 'kuge-replication', text: 'Client-side prediction.' },
+        { name: 'kuge-script', text: 'Lua mods, in a sandbox.' },
       ],
       cta: 'Project page',
       github: 'KUGE on GitHub',
@@ -131,6 +135,8 @@ export const ui: Record<Lang, UI> = {
       back: 'Back to home',
       about: 'Overview',
       examples: 'Examples',
+      changelog: 'Changelog',
+      unreleased: 'Next version (dev branch)',
       github: 'See the repository on GitHub',
       site: 'Project page',
     },

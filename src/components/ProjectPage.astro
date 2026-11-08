@@ -48,6 +48,31 @@ const paths = { fr: projectPath(project.repo, 'fr'), en: projectPath(project.rep
       </section>
 
       {
+        d.changelog && (
+          <section class="block" id="changelog" aria-labelledby="log-label">
+            <h2 class="label" id="log-label">{t.project.changelog}</h2>
+            <div class="block__body changelog">
+              {d.changelog.map((r) => (
+                <article>
+                  <h3>{r.version === 'dev' ? t.project.unreleased : r.version}</h3>
+                  {r.groups.map((g) => (
+                    <>
+                      <h4>{g.title[lang]}</h4>
+                      <ul>
+                        {g.items[lang].map((i) => (
+                          <li>{i}</li>
+                        ))}
+                      </ul>
+                    </>
+                  ))}
+                </article>
+              ))}
+            </div>
+          </section>
+        )
+      }
+
+      {
         d.examples.length > 0 && (
           <section class="block" aria-labelledby="ex-label">
             <h2 class="label" id="ex-label">{t.project.examples}</h2>

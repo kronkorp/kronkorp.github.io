@@ -804,3 +804,25 @@ main + .container .site-footer {
 .block__body > .example + .example {
   margin-top: var(--space-8);
 }
+.changelog {
+  max-width: 42rem;
+}
+.changelog h3 {
+  margin: 0;
+  font: 700 1.5rem/1.2 var(--font-display);
+}
+.changelog h4 {
+  margin: var(--space-6) 0 var(--space-2);
+  color: var(--gold);
+  font-weight: 600;
+}
+.changelog ul {
+  margin: 0;
+  padding-left: 1.25rem;
+}
+.changelog li + li {
+  margin-top: var(--space-2);
+}
+.changelog article + article {
+  margin-top: var(--space-8);
+}

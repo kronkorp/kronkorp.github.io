@@ -2,14 +2,21 @@ import type { Lang } from '../i18n/ui';
 
 export interface Example {
   title: Record<Lang, string>;
-  lang: 'c' | 'cpp' | 'cmake';
+  lang: 'c' | 'cpp' | 'cmake' | 'lua';
   /** Extrait repris du README du dépôt. */
   code: string;
+}
+
+/** Une version du changelog, découpée par thème. version 'dev' = pas encore publiée. */
+export interface Release {
+  version: string;
+  groups: { title: Record<Lang, string>; items: Record<Lang, string[]> }[];
 }
 
 export interface Details {
   about: Record<Lang, string[]>;
   examples: Example[];
+  changelog?: Release[];
 }
 
 /** Contenu des pages projet, par nom de dépôt. Les exemples viennent des README. */
@@ -19,12 +26,14 @@ export const details: Record<string, Details> = {
       fr: [
         'KUGE est un moteur de jeu C++20 fait de briques indépendantes. Un jeu ne lie que celles dont il a besoin : un jeu solo, un serveur dédié et un jeu où un joueur héberge la partie se construisent avec les mêmes briques.',
         'kuge-core porte la boucle à pas fixe, les scènes et les systèmes. kuge-client ajoute la fenêtre, les entrées, le dessin 2D, les sons, le texte et l’interface. kuge-physics gère les collisions 2D. kuge-net, kuge-server et kuge-replication couvrent le réseau, les salons et la prédiction côté client. Un serveur n’embarque ni fenêtre ni code de dessin : le système de build empêche d’inclure ce qui n’est pas lié.',
-        'Le dépôt contient aussi un petit R-Type, en serveur, en client et en hôte, et Arena, un jeu de tir 3D.',
+        'kuge-script ouvre le jeu aux mods. Un mod est un dossier : il remplace des données (JSON, sprites, sons) sans code, et peut ajouter un comportement en Lua. Le jeu décrit lui-même les composants qu’un script a le droit de lire et d’écrire ; le script tourne dans un bac à sable sans fichiers, sans horloge, avec un budget d’instructions et de mémoire, et se recharge à chaud pendant que le jeu tourne. En multijoueur, le serveur choisit les mods et refuse un client dont les fichiers diffèrent.',
+        'Le dépôt contient aussi un petit R-Type, en serveur, en client et en hôte, Arena, un jeu de tir 3D, et Catch, un jeu de 250 lignes avec un mod à côté.',
       ],
       en: [
         'KUGE is a C++20 game engine made of independent building blocks. A game links only the ones it needs: a solo game, a dedicated server and a game where one player hosts the match are all built from the same blocks.',
         'kuge-core holds the fixed-step loop, the scenes and the systems. kuge-client adds the window, inputs, 2D drawing, sounds, text and UI. kuge-physics handles 2D collisions. kuge-net, kuge-server and kuge-replication cover the network, lobbies and client-side prediction. A server carries no window and no drawing code: the build system makes it impossible to include what was not linked.',
-        'The repository also holds a small R-Type, as a server, a client and a host, and Arena, a 3D shooter.',
+        'kuge-script opens the game to mods. A mod is a folder: it replaces data (JSON, sprites, sounds) with no code, and can add behaviour in Lua. The game itself describes which components a script may read and write; the script runs in a sandbox with no files, no clock, and a budget of instructions and memory, and reloads while the game runs. In multiplayer, the server picks the mods and turns away a client whose files differ.',
+        'The repository also holds a small R-Type, as a server, a client and a host, Arena, a 3D shooter, and Catch, a 250-line game with a mod next to it.',
       ],
     },
     examples: [
@@ -76,6 +85,148 @@ int main()
 world.add<kuge::Collider>(hero,  kuge::Collider::box(12.0f, 24.0f));
 world.add<kuge::Body>(hero, kuge::Body{kuge::Body::Type::Dynamic});   // velocity, gravityScale...
 world.add<kuge::Collider>(coin,  kuge::Collider::circle(8.0f).asTrigger());`,
+      },
+      {
+        title: { fr: 'Rendre son jeu moddable', en: 'Make your game moddable' },
+        lang: 'cpp',
+        code: `const kuge::Mods mods = kuge::Mods::scan("mods");
+mods.apply(roots);                         // a mod's files come before the game's
+
+auto registry = std::make_shared<kuge::ComponentRegistry>();
+kuge::describeCore(*registry);             // Transform2D...
+registry->describe<Faller>("Faller", {     // ...and what this game lets a script touch
+    kuge::field<Faller>("speed", &Faller::speed, {.min = 0.0, .max = 1000.0, .help = "Pixels per second"}),
+    kuge::field<Faller>("value", &Faller::value, {.min = 1.0, .max = 100.0, .help = "Points when caught"}),
+});
+
+auto scripts = std::make_shared<kuge::ScriptEngine>(*registry);
+for (const auto& script : mods.scripts())
+    scripts->load(script.file, script.mod);  // each mod keeps its own globals`,
+      },
+      {
+        title: { fr: 'Un mod en Lua', en: 'A mod in Lua' },
+        lang: 'lua',
+        code: `-- mods/golden/scripts/golden.lua: every 5 seconds, a gold coin falls twice as fast and is worth 5 points.
+local EVERY = 5.0
+local timer = 0.0
+
+function update(dt)
+    timer = timer + dt
+    if timer >= EVERY then
+        timer = timer - EVERY
+        world:spawn{
+            Transform2D = {position = {math.random(-280, 280), -250}},
+            Faller = {speed = 240, value = 5},
+        }
+    end
+end`,
+      },
+    ],
+    changelog: [
+      {
+        version: 'dev',
+        groups: [
+          {
+            title: { fr: 'Modding en Lua', en: 'Lua modding' },
+            items: {
+              fr: [
+                'Nouveau module kuge-script : des scripts Lua dans un bac à sable, qui lisent et écrivent le monde par nom à travers une seule table, world.',
+                'Le jeu choisit ce qui est moddable : un script ne voit que les composants décrits au ComponentRegistry.',
+                'ScriptSystem appelle update(dt) de chaque mod à chaque tick ; un mod qui plante est arrêté seul.',
+                'Rechargement à chaud des scripts pendant que le jeu tourne (option --dev).',
+                'Chaque mod a ses propres globales, sa copie des tables standard et de world, et sa limite de mémoire (16 Mio par mod, 64 Mio en tout).',
+                'Bac à sable : ni io, os, require ni load, pas de bytecode, pas d’horloge ; 1 000 000 d’instructions par appel.',
+                'Multijoueur : une empreinte de tous les fichiers des mods ; un client qui n’a pas les mêmes est refusé.',
+                'Exemples : Catch, un jeu de 250 lignes avec le mod « golden », et le mod « waves ». Un chapitre complet du guide sur les scripts.',
+              ],
+              en: [
+                'New kuge-script module: Lua scripts in a sandbox, reading and writing the world by name through a single table, world.',
+                'The game chooses what is moddable: a script only sees the components described to the ComponentRegistry.',
+                'ScriptSystem calls every mod’s update(dt) each tick; a mod that fails is stopped alone.',
+                'Hot reload of scripts while the game runs (--dev switch).',
+                'Each mod has its own globals, its own copy of the standard tables and of world, and its own memory limit (16 MiB per mod, 64 MiB in all).',
+                'Sandbox: no io, os, require or load, no bytecode, no clock; 1,000,000 instructions per call.',
+                'Multiplayer: a fingerprint of every mod file; a client without the same ones is turned away.',
+                'Examples: Catch, a 250-line game with the “golden” mod, and the “waves” mod. A full guide chapter on scripts.',
+              ],
+            },
+          },
+          {
+            title: { fr: 'Interface', en: 'UI' },
+            items: {
+              fr: [
+                'Coins arrondis pour les panneaux, boutons et champs texte ; les clics suivent la forme.',
+                'Images avec rotation, pivot et arrondi.',
+                'Texte trop long : coupé, terminé par « … », défilant ou passé à la ligne.',
+                'Les enfants sont coupés au rectangle du parent ; un élément posé sur un bouton prend ses clics.',
+              ],
+              en: [
+                'Rounded corners for panels, buttons and text fields; clicks follow the shape.',
+                'Images with rotation, pivot and rounded corners.',
+                'Text too long for its label: clipped, ended with “…”, scrolling or wrapped.',
+                'Children are clipped to their parent’s rectangle; a node over a button takes its clicks.',
+              ],
+            },
+          },
+          {
+            title: { fr: 'Rendu', en: 'Rendering' },
+            items: {
+              fr: [
+                'Résolution de base : le jeu dessine dans une taille fixe, agrandie en plein écran.',
+                'Une image dessinée plus petite qu’elle n’est n’a plus d’effet d’escalier.',
+                'Caméra : secousses de la vue sans changer la visée, et inclinaison (roll).',
+              ],
+              en: [
+                'Base resolution: the game draws at a fixed size, scaled up in fullscreen.',
+                'A picture drawn smaller than it is no longer aliases.',
+                'Camera: view kicks apart from the aim, and roll.',
+              ],
+            },
+          },
+          {
+            title: { fr: 'Moteur et réseau', en: 'Engine and network' },
+            items: {
+              fr: [
+                'Traduction : textes par langue, langue de secours, variables {n} et pluriels.',
+                'Un client qui redémarre retrouve sa place dans la partie.',
+              ],
+              en: [
+                'Localization: texts per language, fallback language, {n} variables and plural forms.',
+                'A client that restarts gets its place back in the match.',
+              ],
+            },
+          },
+          {
+            title: { fr: '3D et niveaux', en: '3D and levels' },
+            items: {
+              fr: [
+                'Un niveau se lit depuis une scène 3D : les objets col_ sont des murs, zone_ des déclencheurs, spawn_ et lamp des repères.',
+                'Collisions sur maillage pour les objets fixes : toit, pente, mur courbe.',
+                'Personnages modulaires : un seul modèle partagé dont on cache des parties.',
+                'Niveau destructible, synchronisé entre les joueurs et pris en compte par la prédiction.',
+              ],
+              en: [
+                'A level is read from a 3D scene: col_ objects are walls, zone_ triggers, spawn_ and lamp markers.',
+                'Mesh colliders for static objects: a roof, a slope, a curved wall.',
+                'Modular characters: one shared model with parts hidden.',
+                'Destructible level, synced between players and handled by prediction.',
+              ],
+            },
+          },
+          {
+            title: { fr: 'Windows', en: 'Windows' },
+            items: {
+              fr: [
+                'Les tests unitaires compilent et tournent sous Windows.',
+                'Correctifs : limite d’images par seconde, signaux d’arrêt, kuge.dll, audio SDL, connexions TCP.',
+              ],
+              en: [
+                'The unit tests build and run on Windows.',
+                'Fixes: frame limit, stop signals, kuge.dll, SDL audio, TCP connections.',
+              ],
+            },
+          },
+        ],
       },
     ],
   },
