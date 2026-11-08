@@ -37,7 +37,7 @@ const canonical = abs(paths[lang]);
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <meta property="og:url" content={canonical} />
-    <meta property="og:image" content={abs('/img/kronk-corp-logo.png')} />
+    <meta property="og:image" content={abs('/img/kronk-corp-logo.jpg')} />
     <meta property="og:locale" content={lang === 'fr' ? 'fr_FR' : 'en_US'} />
 
     <link rel="preload" href="/fonts/Saira-400.woff2" as="font" type="font/woff2" crossorigin />
@@ -50,8 +50,8 @@ const canonical = abs(paths[lang]);
     />
   </head>
   <body>
-    <div class="rail rail--l" aria-hidden="true">Kronk Corp</div>
-    <div class="rail rail--r" aria-hidden="true">C++20 / C</div>
+    <div class="rail rail--l" aria-hidden="true">Kronk Corp // Game engine goes brrr</div>
+    <div class="rail rail--r" aria-hidden="true">C++20 / C // Epitech // Open source</div>
     <slot />
   </body>
 </html>

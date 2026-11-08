@@ -1,0 +1,42 @@
+---
+import { languages, ui, type Lang } from '../i18n/ui';
+import { ORG_URL } from '../data/projects';
+
+interface Props {
+  lang: Lang;
+  paths: Record<Lang, string>;
+}
+const { lang, paths } = Astro.props;
+const t = ui[lang];
+const home = languages[lang].path;
+---
+
+<header class="nav">
+  <div class="container nav__inner">
+    <a class="brand" href={home}>
+      <img src="/img/kronk-corp-logo.jpg" alt="" width="32" height="32" />
+      <span>Kronk Corp</span>
+    </a>
+    <nav class="nav__links" aria-label={t.nav.label}>
+      <a href={`${home}#kuge`}>{t.nav.engine}</a>
+      <a href={`${home}#libs`}>{t.nav.libs}</a>
+      <a href={`${home}#about`}>{t.nav.about}</a>
+    </nav>
+    <nav class="lang" aria-label={t.langLabel}>
+      {
+        (Object.keys(languages) as Lang[]).map((code) => (
+          <a
+            href={paths[code]}
+            hreflang={code}
+            lang={code}
+            aria-label={languages[code].name}
+            aria-current={code === lang ? 'page' : undefined}
+          >
+            {languages[code].short}
+          </a>
+        ))
+      }
+    </nav>
+    <a class="btn btn--gold btn--sm" href={ORG_URL}>GitHub</a>
+  </div>
+</header>

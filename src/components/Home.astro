@@ -1,8 +1,10 @@
 ---
+import { Code } from 'astro:components';
 import Base from '../layouts/Base.astro';
-import LangNav from './LangNav.astro';
+import SiteNav from './SiteNav.astro';
 import { languages, ui, type Lang } from '../i18n/ui';
-import { clibs, cpp, members, ORG_URL, projectPath, type Project } from '../data/projects';
+import { details } from '../data/details';
+import { clibs, cpp, members, ORG_URL, projectPath, repoUrl, type Project } from '../data/projects';
 
 interface Props {
   lang: Lang;
@@ -10,20 +12,34 @@ interface Props {
 const { lang } = Astro.props;
 const t = ui[lang];
 
-const groups: { id: string; label: string; projects: Project[] }[] = [
-  { id: 'cpp', label: t.cpp.label, projects: cpp },
-  { id: 'c', label: t.clibs.label, projects: clibs },
+const groups: { id: string; label: string; lang: string; projects: Project[] }[] = [
+  { id: 'cpp', label: t.cpp.label, lang: 'C++', projects: cpp },
+  { id: 'c', label: t.clibs.label, lang: 'C', projects: clibs },
 ];
+const repos = ['KUGE', ...cpp.map((p) => p.repo), ...clibs.map((p) => p.repo)];
+
+// ponytail: étoiles lues au build, figées jusqu'au prochain déploiement. Sans réseau, on ne les affiche pas.
+const stars: Record<string, number> = await fetch('https://api.github.com/orgs/kronkorp/repos?per_page=100')
+  .then((r) => (r.ok ? r.json() : []))
+  .then((list: { name: string; stargazers_count: number }[]) =>
+    Object.fromEntries(list.map((r) => [r.name, r.stargazers_count])),
+  )
+  .catch(() => ({}));
+const totalStars = repos.reduce((sum, r) => sum + (stars[r] ?? 0), 0);
+const pad = (n: number) => String(n).padStart(2, '0');
+const sample = details.KUGE.examples[0];
 ---
 
 <Base lang={lang} title={t.meta.title} description={t.meta.description}>
   <a class="skip" href="#main">{t.skip}</a>
 
-  <div class="container">
-    <LangNav lang={lang} paths={{ fr: languages.fr.path, en: languages.en.path }} />
+  <SiteNav lang={lang} paths={{ fr: languages.fr.path, en: languages.en.path }} />
 
-    <main id="main">
-      <section class="hero">
+  <main id="main">
+    <section class="hero">
+      <div class="hero__grid" aria-hidden="true"></div>
+      <div class="container hero__inner">
+        <p class="kicker">{t.hero.kicker}</p>
         <h1 class="wordmark">
           <svg class="wordmark__k" viewBox="20 20 161 100" aria-hidden="true">
             <defs>
@@ -39,60 +55,119 @@ const groups: { id: string; label: string; projects: Project[] }[] = [
           </svg>
           <span>Kronk Corp</span>
         </h1>
-        <p class="hero__lead">{t.hero.lead}</p>
-        <p class="hero__link"><a href={ORG_URL}>{t.hero.cta}</a></p>
-      </section>
 
-      <section class="block" aria-labelledby="about-label">
-        <h2 class="label" id="about-label">{t.about.label}</h2>
-        <div class="block__body about">
-          {t.about.paragraphs.map((p) => <p>{p}</p>)}
+        <div class="hero__row">
+          <div>
+            <p class="hero__lead">{t.hero.lead}</p>
+            <p class="actions">
+              <a class="btn btn--gold" href="#kuge">{t.hero.cta}</a>
+              <a class="btn btn--ghost" href={ORG_URL}>{t.hero.github}</a>
+            </p>
+          </div>
+          <figure class="unit">
+            <img src="/img/kronk-corp-logo.jpg" alt="Logo Kronk Corp" width="460" height="460" />
+            <span class="unit__scan" aria-hidden="true"></span>
+            <figcaption class="unit__tag" aria-hidden="true">Unit KRONK-01 // online</figcaption>
+          </figure>
+        </div>
+
+        <dl class="stats">
+          <div><dt>{t.stats.projects}</dt><dd>{pad(repos.length)}</dd></div>
+          {totalStars > 0 && <div><dt>{t.stats.stars}</dt><dd>{pad(totalStars)}</dd></div>}
+          <div><dt>{t.stats.members}</dt><dd>{pad(members.length)}</dd></div>
+          <div><dt>{t.stats.langs}</dt><dd>C / C++20</dd></div>
+        </dl>
+      </div>
+    </section>
+
+    <section class="sec" id="kuge" aria-labelledby="kuge-label">
+      <div class="container block">
+        <h2 class="label" id="kuge-label">01 / {t.kuge.label}</h2>
+        <div class="sec__body">
+          <h3 class="display"><a href={projectPath('KUGE', lang)}>KUGE</a></h3>
+          <p class="sec__lead">{t.kuge.lead}</p>
+          <p class="actions">
+            <a class="btn btn--gold" href={projectPath('KUGE', lang)}>{t.kuge.cta}</a>
+            <a class="btn btn--ghost" href={repoUrl('KUGE')}>{t.kuge.github}</a>
+          </p>
+          <ul class="modules">
+            {
+              t.kuge.modules.map((m, i) => (
+                <li>
+                  <span class="modules__id" aria-hidden="true">M-{pad(i + 1)}</span>
+                  <code>{m.name}</code>
+                  <p>{m.text}</p>
+                </li>
+              ))
+            }
+          </ul>
+          <figure class="window">
+            <figcaption class="window__bar"><span aria-hidden="true"></span>{sample.title[lang]}</figcaption>
+            <Code code={sample.code} lang={sample.lang} theme="github-dark" />
+          </figure>
+        </div>
+      </div>
+    </section>
+
+    <section class="sec" id="libs" aria-labelledby="libs-label">
+      <div class="container block">
+        <h2 class="label" id="libs-label">02 / {t.libs.label}</h2>
+        <div class="sec__body">
+          <h3 class="display display--md">{t.libs.title}</h3>
+          <p class="sec__lead">{t.libs.lead}</p>
+          {
+            groups.map((g) => (
+              <div class={`group group--${g.id}`}>
+                <h4 class="group__label">
+                  {g.label} <span>{pad(g.projects.length)}</span>
+                </h4>
+                <ul class="cards">
+                  {g.projects.map((p, i) => (
+                    <li class="card">
+                      <p class="card__meta">
+                        <span class="card__lang">{g.lang}</span>
+                        {stars[p.repo] !== undefined && <span>★ {stars[p.repo]}</span>}
+                      </p>
+                      <h5 class="card__name">
+                        <a href={projectPath(p.repo, lang)}>{p.repo}</a>
+                      </h5>
+                      <p class="card__text">{p.description[lang]}</p>
+                      {p.homepage && (
+                        <a class="card__site" href={p.homepage}>
+                          {t.site}
+                        </a>
+                      )}
+                      <span class="card__id" aria-hidden="true">
+                        {g.id}-{pad(i + 1)}
+                      </span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ))
+          }
+        </div>
+      </div>
+    </section>
+
+    <section class="sec" id="about" aria-labelledby="about-label">
+      <div class="container block">
+        <h2 class="label" id="about-label">03 / {t.about.label}</h2>
+        <div class="sec__body about">
+          <p class="statement">{t.about.paragraphs[0]}</p>
+          {t.about.paragraphs.slice(1).map((p) => <p>{p}</p>)}
           <p class="members">
             <span>{t.about.members}</span>
             {members.map((m) => <a href={`https://github.com/${m.login}`}>{m.name}</a>)}
           </p>
         </div>
-      </section>
+      </div>
+    </section>
+  </main>
 
-      <section class="block" aria-labelledby="kuge-label">
-        <h2 class="label" id="kuge-label">{t.kuge.label}</h2>
-        <div class="block__body panel">
-          <h3 class="kuge__name"><a href={projectPath('KUGE', lang)}>KUGE</a></h3>
-          <p class="kuge__lead">{t.kuge.lead}</p>
-          <ul class="modules">
-            {t.kuge.modules.map((m) => <li>{m}</li>)}
-          </ul>
-          <p><a href={projectPath('KUGE', lang)}>{t.kuge.cta}</a></p>
-        </div>
-      </section>
-
-      {
-        groups.map((g) => (
-          <section class={`block block--${g.id}`} aria-labelledby={`${g.id}-label`}>
-            <h2 class="label" id={`${g.id}-label`}>{g.label}</h2>
-            <ul class="rows">
-              {g.projects.map((p) => (
-                <li class="row">
-                  <a class="row__name" href={projectPath(p.repo, lang)}>{p.repo}</a>
-                  <p class="row__text">
-                    {p.description[lang]}
-                    {p.homepage && (
-                      <>
-                        {' '}
-                        <a href={p.homepage}>{t.site}</a>
-                      </>
-                    )}
-                  </p>
-                </li>
-              ))}
-            </ul>
-          </section>
-        ))
-      }
-    </main>
-
+  <div class="container">
     <footer class="site-footer">
-      <span>Kronk Corp</span>
+      <span>Kronk Corp // {t.hero.kicker}</span>
       <a href={ORG_URL}>{t.footer.org}</a>
     </footer>
   </div>

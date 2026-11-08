@@ -9,8 +9,11 @@ interface UI {
   meta: { title: string; description: string };
   skip: string;
   langLabel: string;
-  hero: { lead: string; cta: string };
-  kuge: { label: string; lead: string; modules: string[]; cta: string };
+  nav: { label: string; engine: string; libs: string; about: string };
+  hero: { kicker: string; lead: string; cta: string; github: string };
+  stats: { projects: string; stars: string; members: string; langs: string };
+  kuge: { label: string; lead: string; modules: { name: string; text: string }[]; cta: string; github: string };
+  libs: { label: string; title: string; lead: string };
   cpp: { label: string };
   clibs: { label: string };
   site: string;
@@ -29,15 +32,32 @@ export const ui: Record<Lang, UI> = {
     },
     skip: 'Aller au contenu',
     langLabel: 'Langue',
+    nav: { label: 'Sections', engine: 'Moteur', libs: 'Bibliothèques', about: 'À propos' },
     hero: {
-      lead: 'Un moteur de jeu, des bibliothèques C et leurs outils.',
-      cta: 'Voir l’orga sur GitHub',
+      kicker: 'Game engine goes brrr',
+      lead: 'Un moteur de jeu, des bibliothèques C et leurs outils. Tout est écrit de zéro, et tout est ouvert.',
+      cta: 'Découvrir KUGE',
+      github: 'L’orga sur GitHub',
     },
+    stats: { projects: 'Projets', stars: 'Étoiles GitHub', members: 'Membres', langs: 'Langages' },
     kuge: {
       label: 'Moteur',
       lead: 'KUGE est un moteur de jeu C++20 fait de briques indépendantes. Un jeu ne lie que celles dont il a besoin.',
-      modules: ['kuge-core', 'kuge-client', 'kuge-physics'],
-      cta: 'Voir KUGE sur GitHub',
+      modules: [
+        { name: 'kuge-core', text: 'La boucle à pas fixe, les scènes et les systèmes.' },
+        { name: 'kuge-client', text: 'La fenêtre, les entrées, le dessin 2D, les sons, le texte et l’interface.' },
+        { name: 'kuge-physics', text: 'Les collisions 2D.' },
+        { name: 'kuge-net', text: 'Le réseau.' },
+        { name: 'kuge-server', text: 'Les salons, côté serveur.' },
+        { name: 'kuge-replication', text: 'La prédiction côté client.' },
+      ],
+      cta: 'Page du projet',
+      github: 'KUGE sur GitHub',
+    },
+    libs: {
+      label: 'Bibliothèques',
+      title: 'Chaque brique, écrite à la main.',
+      lead: 'Le moteur s’appuie sur ces bibliothèques. Chacune a son dépôt et sa documentation.',
     },
     cpp: { label: 'C++' },
     clibs: { label: 'Bibliothèques C' },
@@ -69,15 +89,32 @@ export const ui: Record<Lang, UI> = {
     },
     skip: 'Skip to content',
     langLabel: 'Language',
+    nav: { label: 'Sections', engine: 'Engine', libs: 'Libraries', about: 'About' },
     hero: {
-      lead: 'A game engine, C libraries and their tools.',
-      cta: 'See the organization on GitHub',
+      kicker: 'Game engine goes brrr',
+      lead: 'A game engine, C libraries and their tools. Everything is written from scratch, and everything is open.',
+      cta: 'Discover KUGE',
+      github: 'The organization on GitHub',
     },
+    stats: { projects: 'Projects', stars: 'GitHub stars', members: 'Members', langs: 'Languages' },
     kuge: {
       label: 'Engine',
       lead: 'KUGE is a C++20 game engine made of independent blocks. A game links only the ones it needs.',
-      modules: ['kuge-core', 'kuge-client', 'kuge-physics'],
-      cta: 'See KUGE on GitHub',
+      modules: [
+        { name: 'kuge-core', text: 'The fixed-step loop, the scenes and the systems.' },
+        { name: 'kuge-client', text: 'The window, inputs, 2D drawing, sounds, text and UI.' },
+        { name: 'kuge-physics', text: '2D collisions.' },
+        { name: 'kuge-net', text: 'The network.' },
+        { name: 'kuge-server', text: 'Lobbies, on the server side.' },
+        { name: 'kuge-replication', text: 'Client-side prediction.' },
+      ],
+      cta: 'Project page',
+      github: 'KUGE on GitHub',
+    },
+    libs: {
+      label: 'Libraries',
+      title: 'Every block, written by hand.',
+      lead: 'The engine relies on these libraries. Each one has its own repository and documentation.',
     },
     cpp: { label: 'C++' },
     clibs: { label: 'C libraries' },

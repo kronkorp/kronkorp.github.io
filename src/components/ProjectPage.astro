@@ -1,7 +1,7 @@
 ---
 import { Code } from 'astro:components';
 import Base from '../layouts/Base.astro';
-import LangNav from './LangNav.astro';
+import SiteNav from './SiteNav.astro';
 import { languages, ui, type Lang } from '../i18n/ui';
 import { details } from '../data/details';
 import { projectPath, repoUrl, type Project } from '../data/projects';
@@ -19,9 +19,9 @@ const paths = { fr: projectPath(project.repo, 'fr'), en: projectPath(project.rep
 <Base lang={lang} title={`${project.repo} | Kronk Corp`} description={t.projectMeta(project.repo)} paths={paths}>
   <a class="skip" href="#main">{t.skip}</a>
 
-  <div class="container">
-    <LangNav lang={lang} paths={paths} />
+  <SiteNav lang={lang} paths={paths} />
 
+  <div class="container">
     <main id="main">
       <section class="project-head">
         <p class="back"><a href={languages[lang].path}>{t.project.back}</a></p>
