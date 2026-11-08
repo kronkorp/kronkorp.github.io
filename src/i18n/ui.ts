@@ -14,13 +14,13 @@ interface UI {
   notFound: { lead: string; home: string };
   hero: { kicker: string; lead: string; cta: string; github: string };
   stats: { projects: string; stars: string; members: string; langs: string };
-  kuge: { label: string; lead: string; modules: { name: string; text: string }[]; cta: string; github: string };
+  kuge: { label: string; lead: string; intro: string; shots: { label: string; prev: string; next: string }; modules: { name: string; text: string }[]; cta: string; github: string };
   libs: { label: string; title: string; lead: string };
   cpp: { label: string };
   clibs: { label: string };
   site: string;
   about: { label: string; paragraphs: string[]; members: string };
-  project: { back: string; about: string; examples: string; changelog: string; unreleased: string; github: string; site: string };
+  project: { back: string; about: string; modules: string; examples: string; changelog: string; unreleased: string; github: string; site: string };
   projectMeta: (name: string) => string;
   footer: { org: string };
 }
@@ -46,6 +46,9 @@ export const ui: Record<Lang, UI> = {
     stats: { projects: 'Projets', stars: 'Étoiles GitHub', members: 'Membres', langs: 'Langages' },
     kuge: {
       label: 'Moteur',
+      intro:
+        'Avec KUGE, on fait des jeux 2D et 3D, en solo ou en réseau : serveur dédié, salons, prédiction côté client. Il gère la fenêtre, le son, l’interface, la physique et les animations, s’ouvre aux mods en Lua, et tourne sous Linux et Windows. Tout est écrit de zéro, et le code est ouvert.',
+      shots: { label: 'Built with KUGE', prev: 'Image précédente', next: 'Image suivante' },
       lead: 'KUGE est un moteur de jeu C++20 fait de briques indépendantes. Un jeu ne lie que celles dont il a besoin.',
       modules: [
         { name: 'kuge-core', text: 'La boucle à pas fixe, les scènes et les systèmes.' },
@@ -82,6 +85,7 @@ export const ui: Record<Lang, UI> = {
     project: {
       back: 'Retour à l’accueil',
       about: 'Présentation',
+      modules: 'Modules',
       examples: 'Exemples',
       changelog: 'Nouveautés',
       unreleased: 'Prochaine version (branche dev)',
@@ -112,6 +116,9 @@ export const ui: Record<Lang, UI> = {
     stats: { projects: 'Projects', stars: 'GitHub stars', members: 'Members', langs: 'Languages' },
     kuge: {
       label: 'Engine',
+      intro:
+        'KUGE makes 2D and 3D games, solo or networked: dedicated server, lobbies, client-side prediction. It handles the window, sound, UI, physics and animation, opens up to Lua mods, and runs on Linux and Windows. Everything is written from scratch, and the code is open.',
+      shots: { label: 'Built with KUGE', prev: 'Previous image', next: 'Next image' },
       lead: 'KUGE is a C++20 game engine made of independent blocks. A game links only the ones it needs.',
       modules: [
         { name: 'kuge-core', text: 'The fixed-step loop, the scenes and the systems.' },
@@ -148,6 +155,7 @@ export const ui: Record<Lang, UI> = {
     project: {
       back: 'Back to home',
       about: 'Overview',
+      modules: 'Modules',
       examples: 'Examples',
       changelog: 'Changelog',
       unreleased: 'Next version (dev branch)',

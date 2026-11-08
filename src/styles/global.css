@@ -514,6 +514,92 @@ a:hover {
   color: var(--muted);
 }
 
+.sec__text {
+  max-width: 38rem;
+  color: var(--muted);
+}
+
+/* Carrousel et explication côte à côte, empilés sur petit écran */
+.showcase {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 2fr);
+  gap: var(--space-8) clamp(24px, 4vw, 56px);
+  align-items: center;
+  margin: clamp(48px, 7vw, 80px) 0;
+}
+.showcase .sec__text {
+  margin: 0;
+  font-size: 1.0625rem;
+  line-height: 1.6;
+}
+@media (max-width: 860px) {
+  .showcase {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+/* Carrousel de ce qui a été fait avec KUGE : une image à la fois, glissable */
+.shots {
+  min-width: 0;
+}
+.shots__label {
+  margin: 0 0 var(--space-4);
+  font: 400 0.75rem/1.5 var(--font-mono);
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--gold);
+}
+.shots__track {
+  display: flex;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scroll-behavior: smooth;
+  scrollbar-width: none;
+}
+.shots__track::-webkit-scrollbar {
+  display: none;
+}
+.shots__track li {
+  flex: 0 0 100%;
+  scroll-snap-align: start;
+}
+.shots figure {
+  margin: 0;
+}
+.shots img {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 16 / 9;
+  object-fit: contain;
+  border-top: 3px solid var(--gold);
+  background: var(--plate);
+}
+.shots figcaption {
+  margin-top: var(--space-3);
+  font-size: 0.875rem;
+  color: var(--muted);
+}
+.shots__nav {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+  margin: var(--space-4) 0 0;
+}
+.shots__count {
+  font: 400 0.75rem/1 var(--font-mono);
+  letter-spacing: 0.15em;
+  color: var(--muted);
+}
+@media (prefers-reduced-motion: reduce) {
+  .shots__track {
+    scroll-behavior: auto;
+  }
+}
+
 /* Fenêtre de code */
 .window {
   max-width: 48rem;

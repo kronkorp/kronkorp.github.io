@@ -49,6 +49,25 @@ const paths = { fr: projectPath(project.repo, 'fr'), en: projectPath(project.rep
       </section>
 
       {
+        project.repo === 'KUGE' && (
+          <section class="block" aria-labelledby="modules-label">
+            <h2 class="label" id="modules-label">{t.project.modules}</h2>
+            <div class="block__body">
+              <ul class="modules">
+                {t.kuge.modules.map((m, i) => (
+                  <li>
+                    <span class="modules__id" aria-hidden="true">M-{String(i + 1).padStart(2, '0')}</span>
+                    <code>{m.name}</code>
+                    <p>{m.text}</p>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </section>
+        )
+      }
+
+      {
         d.changelog && (
           <section class="block" id="changelog" aria-labelledby="log-label">
             <h2 class="label" id="log-label">{t.project.changelog}</h2>

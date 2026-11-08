@@ -4,7 +4,7 @@ import Base from '../layouts/Base.astro';
 import SiteNav from './SiteNav.astro';
 import { languages, ui, type Lang } from '../i18n/ui';
 import { details } from '../data/details';
-import { clibs, cpp, members, ORG_URL, projectPath, repoUrl, type Project } from '../data/projects';
+import { clibs, cpp, members, ORG_URL, projectPath, repoUrl, showcase, type Project } from '../data/projects';
 
 interface Props {
   lang: Lang;
@@ -91,17 +91,29 @@ const sample = details.KUGE.examples[0];
             <a class="btn btn--ghost" href={`${projectPath('KUGE', lang)}#changelog`}>{t.project.changelog}</a>
             <a class="btn btn--ghost" href={repoUrl('KUGE')}>{t.kuge.github}</a>
           </p>
-          <ul class="modules">
-            {
-              t.kuge.modules.map((m, i) => (
-                <li>
-                  <span class="modules__id" aria-hidden="true">M-{pad(i + 1)}</span>
-                  <code>{m.name}</code>
-                  <p>{m.text}</p>
-                </li>
-              ))
-            }
-          </ul>
+          <div class="showcase">
+          <p class="sec__text">{t.kuge.intro}</p>
+          <div class="shots" role="region" aria-roledescription="carousel" aria-labelledby="shots-label">
+            <h4 class="shots__label" id="shots-label">{t.kuge.shots.label}</h4>
+            <ul class="shots__track">
+              {
+                showcase.map((s, i) => (
+                  <li aria-roledescription="slide" aria-label={`${i + 1} / ${showcase.length}`}>
+                    <figure>
+                      <img src={s.src} alt={s.caption[lang]} width={s.width} height={s.height} loading={i === 0 ? 'eager' : 'lazy'} decoding="async" />
+                      <figcaption>{s.caption[lang]}</figcaption>
+                    </figure>
+                  </li>
+                ))
+              }
+            </ul>
+            <p class="shots__nav">
+              <button type="button" class="btn btn--ghost btn--sm" data-step="-1" aria-label={t.kuge.shots.prev}>←</button>
+              <span class="shots__count" aria-hidden="true">1 / {showcase.length}</span>
+              <button type="button" class="btn btn--ghost btn--sm" data-step="1" aria-label={t.kuge.shots.next}>→</button>
+            </p>
+          </div>
+          </div>
           <figure class="window">
             <figcaption class="window__bar"><span aria-hidden="true"></span>{sample.title[lang]}</figcaption>
             <Code code={sample.code} lang={sample.lang} theme="github-dark" />
@@ -173,3 +185,29 @@ const sample = details.KUGE.examples[0];
     </footer>
   </div>
 </Base>
+
+<script>
+  // Carrousel : défile seul toutes les 5 s, s'arrête dès qu'on y touche (et jamais si on demande moins d'animations).
+  for (const root of document.querySelectorAll<HTMLElement>('.shots')) {
+    const track = root.querySelector<HTMLElement>('.shots__track')!;
+    const count = root.querySelector<HTMLElement>('.shots__count')!;
+    const total = track.children.length;
+    const index = () => Math.round(track.scrollLeft / track.clientWidth);
+    const go = (i: number) => track.scrollTo({ left: ((i + total) % total) * track.clientWidth });
+
+    track.addEventListener('scroll', () => (count.textContent = `${index() + 1} / ${total}`), { passive: true });
+
+    let timer: number | undefined;
+    const stop = () => clearInterval(timer);
+    if (!matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      timer = window.setInterval(() => go(index() + 1), 5000);
+    }
+    root.addEventListener('pointerdown', stop);
+    root.addEventListener('focusin', stop);
+    root.addEventListener('wheel', stop, { passive: true });
+
+    for (const button of root.querySelectorAll<HTMLButtonElement>('[data-step]')) {
+      button.addEventListener('click', () => go(index() + Number(button.dataset.step)));
+    }
+  }
+</script>

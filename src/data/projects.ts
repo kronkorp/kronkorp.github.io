@@ -18,6 +18,37 @@ export const kuge: Project = {
   description: { fr: 'Un moteur de jeu C++20 fait de briques indépendantes.', en: 'A C++20 game engine made of independent blocks.' },
 };
 
+/** Ce qui a été fait avec KUGE, pour l'accueil. La première image est mise en avant. Fichiers dans public/img/kuge/. */
+export const showcase: { src: string; width: number; height: number; caption: Record<Lang, string> }[] = [
+  {
+    src: '/img/kuge/kart-neon-city.webp', width: 1280, height: 720,
+    caption: { fr: 'CP Explorer : course de karts en 3D, circuit Neon City', en: 'CP Explorer: a 3D kart race, Neon City track' },
+  },
+  {
+    src: '/img/kuge/kart-menu.webp', width: 1280, height: 720,
+    caption: { fr: 'CP Explorer : le menu, course solo, contre-la-montre, en ligne', en: 'CP Explorer: the menu, solo race, time trial, online' },
+  },
+  {
+    src: '/img/kuge/kart-karts.webp', width: 1280, height: 720,
+    caption: { fr: 'CP Explorer : le choix du kart', en: 'CP Explorer: choosing a kart' },
+  },
+  {
+    src: '/img/kuge/kart-volcano-rush.webp', width: 1280, height: 720,
+    caption: { fr: 'CP Explorer : circuit Volcano Rush', en: 'CP Explorer: Volcano Rush track' },
+  },
+  {
+    src: '/img/kuge/kart-results.webp', width: 1280, height: 720,
+    caption: { fr: 'CP Explorer : les résultats de la course', en: 'CP Explorer: race results' },
+  },
+  {
+    src: '/img/kuge/my-torch-live.webp', width: 844, height: 478,
+    caption: {
+      fr: 'my_torch_live : un réseau de neurones qui apprend à lire une position d’échecs, vu en 3D pendant l’entraînement',
+      en: 'my_torch_live: a neural network learning to read a chess position, seen in 3D while it trains',
+    },
+  },
+];
+
 export const members = [
   { name: 'Gauthier Malfilatre', login: 'GauthierMalfilatre' },
   { name: 'Ethan Bertin--Prévot', login: 'YknotTYD' },
