@@ -831,6 +831,29 @@ main + .container .site-footer {
 .changelog li + li {
   margin-top: var(--space-2);
 }
-.changelog article + article {
-  margin-top: var(--space-8);
+.changelog details + details {
+  margin-top: var(--space-6);
+}
+.changelog summary {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: var(--space-2) var(--space-4);
+  cursor: pointer;
+  list-style: none;
+}
+.changelog summary::-webkit-details-marker {
+  display: none;
+}
+.changelog summary::before {
+  content: '+';
+  width: 1ch;
+  color: var(--gold);
+  font: 700 1.25rem/1 var(--font-mono);
+}
+.changelog details[open] > summary::before {
+  content: '−';
+}
+.changelog summary .changelog__date {
+  margin: 0;
 }

@@ -16,16 +16,18 @@ const fmt = new Intl.DateTimeFormat(lang, { dateStyle: 'long', timeZone: 'UTC' }
 <div class="changelog">
   {
     entries.map(({ repo, release: r }) => (
-      <article>
-        <h3>
-          {repo && (
-            <>
-              <a href={projectPath(repo, lang)}>{repo}</a>{' '}
-            </>
-          )}
-          {r.version === 'dev' ? t.project.unreleased : r.version}
-        </h3>
-        {r.date && <p class="changelog__date"><time datetime={r.date}>{fmt.format(new Date(r.date))}</time></p>}
+      <details>
+        <summary>
+          <h3>
+            {repo && (
+              <>
+                <a href={projectPath(repo, lang)}>{repo}</a>{' '}
+              </>
+            )}
+            {r.version === 'dev' ? t.project.unreleased : r.version}
+          </h3>
+          {r.date && <p class="changelog__date"><time datetime={r.date}>{fmt.format(new Date(r.date))}</time></p>}
+        </summary>
         {r.groups.map((g) => (
           <>
             <h4>{g.title[lang]}</h4>
@@ -36,7 +38,7 @@ const fmt = new Intl.DateTimeFormat(lang, { dateStyle: 'long', timeZone: 'UTC' }
             </ul>
           </>
         ))}
-      </article>
+      </details>
     ))
   }
 </div>
